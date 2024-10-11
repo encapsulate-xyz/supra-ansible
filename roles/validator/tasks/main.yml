@@ -1,15 +1,10 @@
 ---
-- name: Include create user task
-  ansible.builtin.include_tasks: tasks/create_user.yml
+- name: Include user creation task for sui
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
   vars:
-    user_name: "{{ service_identifier }}"
     home: "{{ validator_home_dir }}"
-
-- name: Create directories
-  ansible.builtin.include_tasks: tasks/create_directories.yml
-  vars:
-    user: "{{ service_identifier }}"
     directories: "{{ validator_directories }}"
+    log_file_path: "{{ validator_log_file_path }}"
 
 - name: Remove old running validator container
   ansible.builtin.shell: |
@@ -161,4 +156,4 @@
     rule: allow
     port: "{{ supra.validator.ports.p2p_port }}"
     proto: tcp
-    comment: Open p2p port for supra rpc
+    comment: Open p2p port for supra validator

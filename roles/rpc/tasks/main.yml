@@ -1,15 +1,10 @@
 ---
-- name: Include create user task
-  ansible.builtin.include_tasks: tasks/create_user.yml
+- name: Include user creation task for sui
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
   vars:
-    user_name: "{{ service_identifier }}"
     home: "{{ rpc_home_dir }}"
-
-- name: Include create directories task
-  ansible.builtin.include_tasks: tasks/create_directories.yml
-  vars:
-    user: "{{ service_identifier }}"
     directories: "{{ rpc_directories }}"
+    log_file_path: "{{ rpc_log_file_path }}"
 
 - name: Remove old running rpc container
   ansible.builtin.shell: |
