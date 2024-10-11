@@ -1,0 +1,13 @@
+---
+all:
+  vars:
+    env: testnet
+  children:
+    supra:
+      hosts:
+        rpc.supra.testnet.encapsulate.xyz:
+          type: rpc
+        validator.supra.testnet.encapsulate.xyz:
+          type: validator
+        fullnode.supra.testnet.encapsulate.xyz:
+          type: fullnode
