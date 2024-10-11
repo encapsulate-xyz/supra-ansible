@@ -1,5 +1,5 @@
 ---
-- name: Include user creation task for sui
+- name: Include user creation task for supra rpc
   ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
   vars:
     home: "{{ rpc_home_dir }}"

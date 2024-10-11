@@ -1,5 +1,5 @@
 ---
-- name: Include user creation task for sui
+- name: Include user creation task for supra validator
   ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
   vars:
     home: "{{ validator_home_dir }}"
