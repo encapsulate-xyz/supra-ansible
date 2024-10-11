@@ -1,0 +1,168 @@
+---
+- name: Include create user task
+  ansible.builtin.include_tasks: tasks/create_user.yml
+  vars:
+    user_name: "{{ service_identifier }}"
+    home: "{{ rpc_home_dir }}"
+    
+- name: Include create directories task
+  ansible.builtin.include_tasks: tasks/create_directories.yml
+  vars:
+    user: "{{ service_identifier }}"
+    directories: "{{ rpc_directories }}"
+
+- name: Remove old running rpc container
+  ansible.builtin.shell: |
+    set -o pipefail
+    docker ps -q -f name=supra_rpc_{{ supra.rpc.ip_address }} | xargs -r docker rm -f
+  args:
+    executable: /bin/bash
+  register: remove_container
+  changed_when: remove_container.stdout != ""
+  failed_when:
+    - remove_container.rc != 0
+    - "'No such container' not in remove_container.stderr"
+
+- name: Create Supra RPC Docker container
+  ansible.builtin.shell: >
+    docker run --name "supra_rpc_{{ supra.rpc.ip_address }}"
+    -v {{ rpc_home_dir }}:/supra/configs
+    -e "SUPRA_HOME=/supra/configs"
+    -e "SUPRA_LOG_DIR=/supra/configs/rpc_node_logs"
+    -e "SUPRA_MAX_LOG_FILE_SIZE=400000000"
+    -e "SUPRA_MAX_UNCOMPRESSED_LOGS=5"
+    -e "SUPRA_MAX_LOG_FILES=20"
+    --net=host
+    -itd {{ supra.rpc.docker_image }}
+  args:
+    executable: /bin/bash
+  register: create_container
+  changed_when: create_container.rc == 0
+  failed_when: create_container.rc != 0
+
+- name: Remove existing supra rpc binary
+  ansible.builtin.file:
+    path: "{{ rpc_bin_dir }}/{{ service_identifier }}"
+    state: absent
+
+- name: Copy Supra RPC binary
+  ansible.builtin.shell: >
+    docker cp supra_rpc_{{ supra.rpc.ip_address }}:/supra/rpc_node {{ rpc_bin_dir }}/{{ service_identifier }}
+  args:
+    executable: /bin/bash
+  register: copy_result
+  changed_when: copy_result.rc == 0
+  failed_when:
+    - copy_result.rc != 0
+    - "'No such container' in copy_result.stderr"
+
+- name: Remove running rpc container
+  ansible.builtin.shell: |
+    set -o pipefail
+    docker ps -q -f name=supra_rpc_{{ supra.rpc.ip_address }} | xargs -r docker rm -f
+  args:
+    executable: /bin/bash
+  register: remove_container
+  changed_when: remove_container.stdout != ""
+  failed_when:
+    - remove_container.rc != 0
+    - "'No such container' not in remove_container.stderr"
+
+- name: Copy config.toml file
+  ansible.builtin.template:
+    src: "{{ env }}/config.toml.j2"
+    dest: "{{ rpc_config_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Download ca_certificate.pem
+  ansible.builtin.get_url:
+    url: "{{ supra.rpc.ca_certificate_pem_url }}"
+    dest: "{{ rpc_ca_certificate_pem_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Download client_supra_certificate.pem
+  ansible.builtin.get_url:
+    url: "{{ supra.rpc.client_supra_certificate_pem_url }}"
+    dest: "{{ rpc_client_supra_certificate_pem_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Download client_supra_key.pem
+  ansible.builtin.get_url:
+    url: "{{ supra.rpc.client_supra_key_pem_url }}"
+    dest: "{{ rpc_client_supra_key_pem_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Unarchive genesis blob
+  ansible.builtin.unarchive:
+    src: "{{ supra.rpc.genesis_blob_url }}"
+    remote_src: true
+    dest: "{{ rpc_config_dir }}"
+
+- name: Copy genesis blob
+  ansible.builtin.copy:
+    src: "{{ rpc_genesis_blob_path }}"
+    dest: "{{ rpc_config_dir }}"
+    remote_src: true
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Download supra_committees.json
+  ansible.builtin.get_url:
+    url: "{{ supra.rpc.supra_committees_json_url }}"
+    dest: "{{ rpc_supra_committees_json_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Remove archive direcotries
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ rpc_archive_directories_and_files }}"
+
+- name: Unzip the snapshot
+  ansible.builtin.unarchive:
+    src: "{{ supra.rpc.snapshot_url }}"
+    dest: "{{ rpc_config_dir }}"
+    remote_src: true
+
+- name: Copy snapshot data into rpc store
+  ansible.builtin.shell: >
+    cp {{ rpc_config_dir }}/snapshot/snapshot_*/store/* {{ rpc_store_dir }}
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Copy snapshot data into rpc archive
+  ansible.builtin.shell: >
+    cp {{ rpc_config_dir }}/snapshot/snapshot_*/archive/* {{ rpc_archive_dir }}
+  args:
+    executable: /bin/bash
+  changed_when: false
+
+- name: Copy supra-rpc-node systemd service file
+  ansible.builtin.template:
+    src: "{{ env }}/supra-rpc.service.j2"
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
+
+- name: Open supra rpc node p2p port
+  community.general.ufw:
+    rule: allow
+    port: "{{ supra.rpc.ports.p2p_port }}"
+    proto: tcp
+    comment: Open p2p port for supra rpc

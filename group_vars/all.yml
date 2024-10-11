@@ -1,0 +1,21 @@
+---
+org: encapsulate
+
+default_node_types:
+  - validator
+  - default
+
+supra:
+  rpc:
+    ip_address: 65.21.252.116
+    ports:
+      p2p_port: 2700
+    docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node:v6.3.0
+    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
+    ca_certificate_pem_url: https://testnet-snapshot.supra.com/certs/ca_certificate.pem
+    client_supra_certificate_pem_url: https://testnet-snapshot.supra.com/certs/client_supra_certificate.pem
+    client_supra_key_pem_url: https://testnet-snapshot.supra.com/certs/client_supra_key.pem
+    genesis_blob_url: https://testnet-snapshot.supra.com/configs/genesis_blob.zip
+    supra_committees_json_url: https://testnet-snapshot.supra.com/configs/supra_committees.json
+  validator:
+    ip_address: 5.78.88.207

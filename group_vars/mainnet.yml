@@ -1,0 +1,6 @@
+---
+supra:
+  rpc:
+    version: 6.3.0
+  validator:
+    version: 6.0.0
