@@ -1,0 +1,33 @@
+---
+- name: Set project and service identifier in facts
+  ansible.builtin.set_fact:
+    project: "{{ group_names[0] }}"
+    service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
+
+- name: Display environment being deployed to
+  ansible.builtin.debug:
+    msg:
+      - "Deploying to Host: {{ inventory_hostname }}"
+      - "Groups: {{ group_names }}"
+      - "Project: {{ project }}"
+      - "Environment: {{ env }}"
+      - "Type: {{ type }}"
+      - "Version: {{ vars[project][type].version }}"
+      - "Username: {{ service_identifier }}"
+      - "Service Name: {{ service_identifier }}"
+
+- name: Confirm deployment details
+  ansible.builtin.pause:
+    prompt: Press 'Enter' to continue with the deployment or Ctrl+C to cancel
+
+- name: Please confirm again
+  ansible.builtin.debug:
+    msg:
+      - "Deploying to Host: {{ inventory_hostname }}"
+      - "Project: {{ project }}"
+      - "Environment: {{ env }}"
+      - "Type: {{ type }}"
+
+- name: Confirm deployment details
+  ansible.builtin.pause:
+    prompt: Press 'Enter' to continue with the deployment or Ctrl+C to cancel
