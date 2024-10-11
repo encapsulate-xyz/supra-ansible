@@ -1,0 +1,9 @@
+---
+# check this website for detailed configuration options:
+#    https://ansible-lint.readthedocs.io/configuring/#ansible-lint-configuration
+
+profile:
+
+skip_list:
+
+exclude_paths:
