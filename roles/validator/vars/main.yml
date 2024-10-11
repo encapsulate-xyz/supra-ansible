@@ -1,0 +1,6 @@
+---
+validator_smr_settings_file_name: smr_settings.toml
+validator_ca_certificate_pem_file_name: ca_certificate.pem 
+validator_server_supra_certificate_pem_file_name: server_supra_certificate.pem
+validator_server_supra_key_pem_file_name: server_supra_key.pem
+validator_genesis_configs_json_file_name: genesis_configs.json
