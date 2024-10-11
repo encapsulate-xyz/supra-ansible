@@ -4,7 +4,7 @@
   vars:
     user_name: "{{ service_identifier }}"
     home: "{{ rpc_home_dir }}"
-    
+
 - name: Include create directories task
   ansible.builtin.include_tasks: tasks/create_directories.yml
   vars:

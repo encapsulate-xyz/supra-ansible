@@ -19,7 +19,7 @@ supra:
     supra_committees_json_url: https://testnet-snapshot.supra.com/configs/supra_committees.json
   validator:
     ip_address: 5.78.88.207
-    ports: 
+    ports:
       p2p_port: 28000
     docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node:v6.0.0
     ca_certificate_pem_url: https://gist.githubusercontent.com/sjadiya-supra/a25596f90a24ff5c4e2b3ebe9cfb57df/raw/5910a4322c90fd9f13ca804c316fcda7221d94ac/ca_certificate.pem
