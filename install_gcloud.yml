@@ -1,0 +1,7 @@
+---
+- name: Setup gcloud
+  hosts: all
+  gather_facts: false
+  become: true
+  roles:
+    - install_gcloud
