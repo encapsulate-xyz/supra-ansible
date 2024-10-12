@@ -1,8 +1,7 @@
 ---
 - name: Reload service
   ansible.builtin.systemd:
-    name: "{{ service_identifier }}"
-    state: reloaded
+    daemon_reload: true
 
 - name: Start service
   ansible.builtin.systemd:
