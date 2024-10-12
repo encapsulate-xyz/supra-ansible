@@ -18,6 +18,7 @@ validator_env:
   SUPRA_HOME: "{{ supra_config_dir }}"
   SUPRA_LOG_DIR: "{{ supra_log_dir }}"
 
+validator_log_file_path: "{{ validator_log_dir }}/{{ service_identifier }}.log"
 validator_smr_settings_file_path: "{{ validator_bin_dir }}/{{ validator_smr_settings_file_name }}"
 validator_ca_certificate_pem_file_path: "{{ validator_config_dir }}/{{ validator_ca_certificate_pem_file_name }}"
 validator_server_supra_certificate_pem_file_path: "{{ validator_config_dir }}/{{ validator_server_supra_certificate_pem_file_name }}"

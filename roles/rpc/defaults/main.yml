@@ -24,6 +24,7 @@ rpc_archive_directories_and_files:
   - "{{ rpc_store_dir }}"
   - "{{ rpc_config_dir }}/latest_snapshot_rpc.zip"
 
+rpc_log_file_path: "{{ rpc_log_dir }}/{{ service_identifier }}.log"
 rpc_config_file_path: "{{ rpc_bin_dir }}/{{ rpc_config_file_name }}"
 rpc_ca_certificate_pem_file_path: "{{ rpc_config_dir }}/{{ rpc_ca_certificate_pem_file_name }}"
 rpc_client_supra_certificate_pem_file_path: "{{ rpc_config_dir }}/{{ rpc_client_supra_certificate_pem_file_name }}"

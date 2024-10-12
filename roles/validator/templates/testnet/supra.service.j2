@@ -14,6 +14,8 @@ ExecStart={{ validator_bin_dir }}/{{ service_identifier }}
 Restart=always
 RestartSec=4
 LimitNOFILE=65536
+StandardOutput=append:{{ validator_log_file_path }}
+StandardError=inherit
 
 [Install]
 WantedBy=multi-user.target
