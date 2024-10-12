@@ -71,37 +71,18 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Download ca_certificate.pem
+- name: Download validator certificates, key, and genesis config
   ansible.builtin.get_url:
-    url: "{{ supra.validator.ca_certificate_pem_url }}"
-    dest: "{{ validator_ca_certificate_pem_file_path }}"
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
-
-- name: Download server_supra_certificate.pem
-  ansible.builtin.get_url:
-    url: "{{ supra.validator.server_supra_certificate_pem_url }}"
-    dest: "{{ validator_server_supra_certificate_pem_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
-
-- name: Download server_supra_key.pem
-  ansible.builtin.get_url:
-    url: "{{ supra.validator.server_supra_key_pem_url }}"
-    dest: "{{ validator_server_supra_key_pem_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
-
-- name: Download genesis_configs.json
-  ansible.builtin.get_url:
-    url: "{{ supra.validator.genesis_configs_url }}"
-    dest: "{{ validator_genesis_configs_json_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
+  loop:
+    - { url: "{{ supra.validator.ca_certificate_pem_url }}", dest: "{{ validator_ca_certificate_pem_file_path }}" }
+    - { url: "{{ supra.validator.server_supra_certificate_pem_url }}", dest: "{{ validator_server_supra_certificate_pem_file_path }}" }
+    - { url: "{{ supra.validator.server_supra_key_pem_url }}", dest: "{{ validator_server_supra_key_pem_file_path }}" }
+    - { url: "{{ supra.validator.genesis_configs_url }}", dest: "{{ validator_genesis_configs_json_file_path }}" }
 
 - name: Build supra committee
   ansible.builtin.shell: >

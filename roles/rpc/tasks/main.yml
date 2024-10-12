@@ -71,29 +71,18 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Download ca_certificate.pem
+- name: Download Supra RPC certificates and key
   ansible.builtin.get_url:
-    url: "{{ supra.rpc.ca_certificate_pem_url }}"
-    dest: "{{ rpc_ca_certificate_pem_file_path }}"
+    url: "{{ item.url }}"
+    dest: "{{ item.dest }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
-
-- name: Download client_supra_certificate.pem
-  ansible.builtin.get_url:
-    url: "{{ supra.rpc.client_supra_certificate_pem_url }}"
-    dest: "{{ rpc_client_supra_certificate_pem_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
-
-- name: Download client_supra_key.pem
-  ansible.builtin.get_url:
-    url: "{{ supra.rpc.client_supra_key_pem_url }}"
-    dest: "{{ rpc_client_supra_key_pem_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
+  loop:
+    - { url: "{{ supra.rpc.ca_certificate_pem_url }}", dest: "{{ rpc_ca_certificate_pem_file_path }}" }
+    - { url: "{{ supra.rpc.client_supra_certificate_pem_url }}", dest: "{{ rpc_client_supra_certificate_pem_file_path }}" }
+    - { url: "{{ supra.rpc.client_supra_key_pem_url }}", dest: "{{ rpc_client_supra_key_pem_file_path }}" }
+    - { url: "{{ supra.rpc.supra_committees_json_url }}", dest: "{{ rpc_supra_committees_json_file_path }}" }
 
 - name: Unarchive genesis blob
   ansible.builtin.unarchive:
@@ -110,14 +99,6 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Download supra_committees.json
-  ansible.builtin.get_url:
-    url: "{{ supra.rpc.supra_committees_json_url }}"
-    dest: "{{ rpc_supra_committees_json_file_path }}"
-    owner: "{{ service_identifier }}"
-    group: "{{ service_identifier }}"
-    mode: "0644"
-
 - name: Remove archive direcotries
   ansible.builtin.file:
     path: "{{ item }}"
@@ -130,15 +111,9 @@
     dest: "{{ rpc_config_dir }}"
     remote_src: true
 
-- name: Copy snapshot data into rpc store
-  ansible.builtin.shell: >
+- name: Copy snapshot data into rpc store and archive
+  ansible.builtin.shell: |
     cp {{ rpc_config_dir }}/snapshot/snapshot_*/store/* {{ rpc_store_dir }}
-  args:
-    executable: /bin/bash
-  changed_when: false
-
-- name: Copy snapshot data into rpc archive
-  ansible.builtin.shell: >
     cp {{ rpc_config_dir }}/snapshot/snapshot_*/archive/* {{ rpc_archive_dir }}
   args:
     executable: /bin/bash
