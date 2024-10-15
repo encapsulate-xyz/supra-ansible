@@ -6,62 +6,46 @@
     directories: "{{ rpc_directories }}"
     log_file_path: "{{ rpc_log_file_path }}"
 
-- name: Remove old running rpc container
-  ansible.builtin.shell: |
-    set -o pipefail
-    docker ps -q -f name=supra_rpc_{{ supra.rpc.ip_address }} | xargs -r docker rm -f
-  args:
-    executable: /bin/bash
-  register: remove_container
-  changed_when: remove_container.stdout != ""
-  failed_when:
-    - remove_container.rc != 0
-    - "'No such container' not in remove_container.stderr"
-
-- name: Create Supra RPC Docker container
-  ansible.builtin.shell: >
-    docker run --name "supra_rpc_{{ supra.rpc.ip_address }}"
-    -v {{ rpc_home_dir }}:/supra/configs
-    -e "SUPRA_HOME=/supra/configs"
-    -e "SUPRA_LOG_DIR=/supra/configs/rpc_node_logs"
-    -e "SUPRA_MAX_LOG_FILE_SIZE=400000000"
-    -e "SUPRA_MAX_UNCOMPRESSED_LOGS=5"
-    -e "SUPRA_MAX_LOG_FILES=20"
-    --net=host
-    -itd {{ supra.rpc.docker_image }}
-  args:
-    executable: /bin/bash
-  register: create_container
-  changed_when: create_container.rc == 0
-  failed_when: create_container.rc != 0
-
 - name: Remove existing supra rpc binary
   ansible.builtin.file:
     path: "{{ rpc_bin_dir }}/{{ service_identifier }}"
     state: absent
 
-- name: Copy Supra RPC binary
-  ansible.builtin.shell: >
-    docker cp supra_rpc_{{ supra.rpc.ip_address }}:/supra/rpc_node {{ rpc_bin_dir }}/{{ service_identifier }}
-  args:
-    executable: /bin/bash
-  register: copy_result
-  changed_when: copy_result.rc == 0
-  failed_when:
-    - copy_result.rc != 0
-    - "'No such container' in copy_result.stderr"
+- name: Create Supra RPC Docker container and copy binary
+  block:
+    - name: Create Supra RPC Docker container
+      community.docker.docker_container:
+        name: supra_rpc
+        image: "{{ supra.rpc.docker_image }}"
+        state: started
+        recreate: true
+        volumes:
+          - "{{ rpc_home_dir }}:/supra/configs"
+        env:
+          SUPRA_HOME: /supra/configs
+          SUPRA_LOG_DIR: /supra/configs/rpc_node_logs
+        network_mode: host
+        detach: true
+        interactive: true
+        tty: true
 
-- name: Remove running rpc container
-  ansible.builtin.shell: |
-    set -o pipefail
-    docker ps -q -f name=supra_rpc_{{ supra.rpc.ip_address }} | xargs -r docker rm -f
-  args:
-    executable: /bin/bash
-  register: remove_container
-  changed_when: remove_container.stdout != ""
-  failed_when:
-    - remove_container.rc != 0
-    - "'No such container' not in remove_container.stderr"
+    - name: Copy Supra RPC binary
+      ansible.builtin.shell: >
+        docker cp supra_rpc:/supra/rpc_node {{ rpc_bin_dir }}/{{ service_identifier }}
+      args:
+        executable: /bin/bash
+      register: copy_result
+      changed_when: copy_result.rc == 0
+      failed_when:
+        - copy_result.rc != 0
+        - "'No such container' in copy_result.stderr"
+
+  always:
+    - name: Remove Supra RPC container
+      community.docker.docker_container:
+        name: supra_rpc
+        state: absent
+        force_kill: true
 
 - name: Copy config.toml file
   ansible.builtin.template:

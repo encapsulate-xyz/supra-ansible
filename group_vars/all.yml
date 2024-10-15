@@ -36,9 +36,8 @@ promtail:
   ports:
     http_listen_port: 9080
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
-  log_path: 
-
+  log_path:
 telegraf:
   service_identifier: telegraf
-  node_name: 
+  node_name:
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"

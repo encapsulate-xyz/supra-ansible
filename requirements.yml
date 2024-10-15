@@ -6,3 +6,5 @@ collections:
     version: 1.5.4
   - name: community.hashi_vault
     version: 6.2.0
+  - name: community.docker
+    version: 3.13.0

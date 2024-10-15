@@ -6,62 +6,46 @@
     directories: "{{ validator_directories }}"
     log_file_path: "{{ validator_log_file_path }}"
 
-- name: Remove old running validator container
-  ansible.builtin.shell: |
-    set -o pipefail
-    docker ps -q -f name=supra_{{ supra.validator.ip_address }} | xargs -r docker rm -f
-  args:
-    executable: /bin/bash
-  register: remove_container
-  changed_when: remove_container.stdout != ""
-  failed_when:
-    - remove_container.rc != 0
-    - "'No such container' not in remove_container.stderr"
-
-- name: Create Supra validator Docker container
-  ansible.builtin.shell: >
-    docker run --name "supra_{{ supra.validator.ip_address }}"
-    -v {{ validator_home_dir }}:/supra/configs
-    -e "SUPRA_HOME=/supra/configs"
-    -e "SUPRA_LOG_DIR=/supra/configs/supra_node_logs"
-    -e "SUPRA_MAX_LOG_FILE_SIZE=400000000"
-    -e "SUPRA_MAX_UNCOMPRESSED_LOGS=5"
-    -e "SUPRA_MAX_LOG_FILES=20"
-    --net=host
-    -itd {{ supra.validator.docker_image }}
-  args:
-    executable: /bin/bash
-  register: create_container
-  changed_when: create_container.rc == 0
-  failed_when: create_container.rc != 0
-
 - name: Remove existing supra validator binary
   ansible.builtin.file:
     path: "{{ validator_bin_dir }}/{{ service_identifier }}"
     state: absent
 
-- name: Copy Supra validator binary
-  ansible.builtin.shell: >
-    docker cp supra_{{ supra.validator.ip_address }}:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
-  args:
-    executable: /bin/bash
-  register: copy_result
-  changed_when: copy_result.rc == 0
-  failed_when:
-    - copy_result.rc != 0
-    - "'No such container' in copy_result.stderr"
+- name: Create Supra Validator Docker container and copy binary
+  block:
+    - name: Create Supra validator Docker container
+      community.docker.docker_container:
+        name: supra_validator
+        image: "{{ supra.validator.docker_image }}"
+        state: started
+        recreate: true
+        volumes:
+          - "{{ validator_home_dir }}:/supra/configs"
+        env:
+          SUPRA_HOME: /supra/configs
+          SUPRA_LOG_DIR: /supra/configs/supra_node_logs
+        network_mode: host
+        detach: true
+        interactive: true
+        tty: true
 
-- name: Remove running validator container
-  ansible.builtin.shell: |
-    set -o pipefail
-    docker ps -q -f name=supra_{{ supra.validator.ip_address }} | xargs -r docker rm -f
-  args:
-    executable: /bin/bash
-  register: remove_container
-  changed_when: remove_container.stdout != ""
-  failed_when:
-    - remove_container.rc != 0
-    - "'No such container' not in remove_container.stderr"
+    - name: Copy Supra validator binary
+      ansible.builtin.shell: >
+        docker cp supra_validator:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
+      args:
+        executable: /bin/bash
+      register: copy_result
+      changed_when: copy_result.rc == 0
+      failed_when:
+        - copy_result.rc != 0
+        - "'No such container' in copy_result.stderr"
+
+  always:
+    - name: Remove Supra validator container
+      community.docker.docker_container:
+        name: supra_validator
+        state: absent
+        force_kill: true
 
 - name: Copy smr_settings.toml file
   ansible.builtin.template:
