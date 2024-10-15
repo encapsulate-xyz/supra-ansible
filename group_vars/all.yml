@@ -9,7 +9,7 @@ tmp_dir: /tmp
 
 supra:
   rpc:
-    ip_address: 
+    ip_address:
     ports:
       p2p_port: 2700
     docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node:v6.3.0
@@ -20,7 +20,7 @@ supra:
     genesis_blob_url: https://testnet-snapshot.supra.com/configs/genesis_blob.zip
     supra_committees_json_url: https://testnet-snapshot.supra.com/configs/supra_committees.json
   validator:
-    ip_address: 
+    ip_address:
     ports:
       p2p_port: 28000
     docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node:v6.0.0
