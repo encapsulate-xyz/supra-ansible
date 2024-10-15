@@ -5,6 +5,8 @@ default_node_types:
   - validator
   - default
 
+tmp_dir: /tmp
+
 supra:
   rpc:
     ip_address: 65.21.252.116
@@ -38,6 +40,7 @@ promtail:
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
   log_path:
 telegraf:
+  source_url: https://dl.influxdata.com/telegraf/releases/telegraf-1.32.1_linux_amd64.tar.gz
   service_identifier: telegraf
   node_name:
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"

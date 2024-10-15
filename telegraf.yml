@@ -1,0 +1,13 @@
+---
+- name: Install Telegraf
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    service_identifier: "{{ telegraf.service_identifier }}"
+  vars_files:
+    - group_vars/all.yml
+    - group_vars/default.yml
+  roles:
+    - common
+    - telegraf
