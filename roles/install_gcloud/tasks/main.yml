@@ -16,11 +16,14 @@
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     state: present
 
-- name: Updte Google Cloud SDK GPG key
+- name: Download Google Cloud SDK GPG key
   ansible.builtin.get_url:
     url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
     dest: /usr/share/keyrings/cloud.google.gpg
+    owner: root
+    group: root
     mode: "0644"
+    checksum: sha256:3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f
 
 - name: Add Google Cloud SDK repository
   ansible.builtin.apt_repository:
@@ -30,8 +33,6 @@
 
 - name: Install gcloud-cli
   ansible.builtin.apt:
-    name: "{{ item }}"
+    name: google-cloud-cli
     state: present
     update_cache: true
-  loop:
-    - google-cloud-cli

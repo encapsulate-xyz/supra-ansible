@@ -1,15 +1,20 @@
 ---
-- name: Create directory for Docker GPG key
+- name: Create directory for external gpg keys
   ansible.builtin.file:
     path: /etc/apt/keyrings
     state: directory
+    owner: root
+    group: root
     mode: "0755"
 
 - name: Download Docker's official GPG key
   ansible.builtin.get_url:
     url: https://download.docker.com/linux/ubuntu/gpg
     dest: /etc/apt/keyrings/docker.asc
+    owner: root
+    group: root
     mode: "0644"
+    checksum: sha256:1500c1f56fa9e26b9b8f42452a553675796ade0807cdce11975eb98170b3a570
 
 - name: Add Docker repository
   ansible.builtin.apt_repository:
