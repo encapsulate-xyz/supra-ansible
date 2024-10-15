@@ -15,4 +15,4 @@ scrape_configs:
         - localhost
         labels:
           job: {{ promtail.job_name }}
-          __path__: {{ promtail.log_path }}
+          __path__: {{ log_path }}

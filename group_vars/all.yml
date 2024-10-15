@@ -36,7 +36,6 @@ promtail:
   ports:
     http_listen_port: 9080
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
-  log_path:
 telegraf:
   source_url: https://dl.influxdata.com/telegraf/releases/telegraf-1.32.1_linux_amd64.tar.gz
   service_identifier: telegraf
