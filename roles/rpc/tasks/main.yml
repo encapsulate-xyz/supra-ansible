@@ -83,26 +83,6 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Remove archive direcotries
-  ansible.builtin.file:
-    path: "{{ item }}"
-    state: absent
-  loop: "{{ rpc_archive_directories_and_files }}"
-
-- name: Unzip the snapshot
-  ansible.builtin.unarchive:
-    src: "{{ supra.rpc.snapshot_url }}"
-    dest: "{{ rpc_config_dir }}"
-    remote_src: true
-
-- name: Copy snapshot data into rpc store and archive
-  ansible.builtin.shell: |
-    cp {{ rpc_config_dir }}/snapshot/snapshot_*/store/* {{ rpc_store_dir }}
-    cp {{ rpc_config_dir }}/snapshot/snapshot_*/archive/* {{ rpc_archive_dir }}
-  args:
-    executable: /bin/bash
-  changed_when: false
-
 - name: Copy supra-rpc-node systemd service file
   ansible.builtin.template:
     src: "{{ env }}/supra-rpc.service.j2"
