@@ -1,6 +1,8 @@
 ---
 collections:
   - name: community.general
+    version: 9.5.0
   - name: ansible.posix
+    version: 1.5.4
   - name: community.hashi_vault
     version: 6.2.0
