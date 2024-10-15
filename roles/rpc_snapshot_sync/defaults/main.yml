@@ -1,0 +1,7 @@
+---
+rpc_snapshot_sync_home_dir: /opt/{{ service_identifier }}
+
+rpc_snapshot_sync_data_dir: "{{ rpc_snapshot_sync_home_dir }}/data"
+rpc_snapshot_sync_archive_dir: "{{ rpc_snapshot_sync_data_dir }}/rpc_archive"
+rpc_snapshot_sync_store_dir: "{{ rpc_snapshot_sync_data_dir }}/rpc_store"
+rpc_snapshot_sync_snapshot_dir: "{{ rpc_snapshot_sync_data_dir }}/snapshot"
