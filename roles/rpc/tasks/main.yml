@@ -72,7 +72,7 @@
   ansible.builtin.unarchive:
     src: "{{ supra.rpc.genesis_blob_url }}"
     remote_src: true
-    dest: "{{ rpc_config_dir }}"
+    dest: "{{ rpc_data_dir }}"
 
 - name: Copy genesis blob
   ansible.builtin.copy:
