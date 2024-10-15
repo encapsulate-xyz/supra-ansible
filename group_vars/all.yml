@@ -28,3 +28,17 @@ supra:
     genesis_configs_url: https://testnet-snapshot.supra.com/configs/genesis_configs.json
     repo_zip_url: https://github.com/Entropy-Foundation/supra-nodeops-data/archive/refs/heads/master.zip
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
+
+promtail:
+  service_identifier: promtail
+  source_url: https://github.com/grafana/loki/releases/download
+  file_extension: zip
+  ports:
+    http_listen_port: 9080
+  job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
+  log_path: 
+
+telegraf:
+  service_identifier: telegraf
+  node_name: 
+  job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"

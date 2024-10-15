@@ -1,0 +1,12 @@
+---
+- name: Install Promtail
+  hosts: all
+  become: true
+  gather_facts: true
+  vars:
+    service_identifier: "{{ promtail.service_identifier }}"
+  vars_files:
+    - group_vars/all.yml
+    - group_vars/default.yml
+  roles:
+    - promtail

@@ -1,0 +1,22 @@
+---
+- name: Copy promtail config
+  ansible.builtin.template:
+    src: promtail.yml.j2
+    dest: "{{ promtail_config_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Copy promtail service file
+  ansible.builtin.template:
+    src: promtail.service.j2
+    dest: /etc/systemd/system/{{ service_identifier }}-supra.service
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Start promtail service for supra monitoring
+  ansible.builtin.systemd:
+    name: "{{ service_identifier }}-supra"
+    state: restarted
+    enabled: true
