@@ -68,30 +68,6 @@
     - { url: "{{ supra.validator.server_supra_key_pem_url }}", dest: "{{ validator_server_supra_key_pem_file_path }}" }
     - { url: "{{ supra.validator.genesis_configs_url }}", dest: "{{ validator_genesis_configs_json_file_path }}" }
 
-- name: Build supra committee
-  ansible.builtin.shell: >
-    {{ validator_bin_dir }}/{{ service_identifier }} genesis build-supra-committee {{ supra.validator.repo_zip_url }}
-  args:
-    executable: /bin/bash
-  changed_when: false
-  environment: "{{ validator_env }}"
-
-- name: Refresh Repository
-  ansible.builtin.shell: >
-    {{ validator_bin_dir }}/{{ service_identifier }} genesis refresh-repo {{ supra.validator.repo_zip_url }}
-  args:
-    executable: /bin/bash
-  changed_when: false
-  environment: "{{ validator_env }}"
-
-- name: Generate Genesis Blob
-  ansible.builtin.shell: >
-    {{ validator_bin_dir }}/{{ service_identifier }} genesis generate-genesis-blob
-  args:
-    executable: /bin/bash
-  changed_when: false
-  environment: "{{ validator_env }}"
-
 - name: Unzip the snapshot
   ansible.builtin.unarchive:
     src: "{{ supra.validator.snapshot_url }}"
