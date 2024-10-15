@@ -4,14 +4,17 @@ rpc_home_dir: /opt/{{ service_identifier }}
 rpc_bin_dir: "{{ rpc_home_dir }}/bin"
 rpc_log_dir: "{{ rpc_home_dir }}/log"
 rpc_config_dir: "{{ rpc_home_dir }}/config"
-rpc_archive_dir: "{{ rpc_config_dir }}/rpc_archive"
-rpc_store_dir: "{{ rpc_config_dir }}/rpc_store"
-rpc_ledger_dir: "{{ rpc_config_dir }}/rpc_ledger"
-rpc_snapshot_dir: "{{ rpc_config_dir }}/snapshot"
+
+rpc_data_dir: "{{ rpc_home_dir }}/data"
+rpc_archive_dir: "{{ rpc_data_dir }}/rpc_archive"
+rpc_store_dir: "{{ rpc_data_dir }}/rpc_store"
+rpc_ledger_dir: "{{ rpc_data_dir }}/rpc_ledger"
+rpc_snapshot_dir: "{{ rpc_data_dir }}/snapshot"
 
 rpc_directories:
   - "{{ rpc_home_dir }}"
   - "{{ rpc_bin_dir }}"
+  - "{{ rpc_data_dir }}"
   - "{{ rpc_config_dir }}"
   - "{{ rpc_log_dir }}"
   - "{{ rpc_archive_dir }}"

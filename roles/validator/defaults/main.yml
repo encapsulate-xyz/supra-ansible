@@ -4,12 +4,15 @@ validator_home_dir: /opt/{{ service_identifier }}
 validator_bin_dir: "{{ validator_home_dir }}/bin"
 validator_log_dir: "{{ validator_home_dir }}/log"
 validator_config_dir: "{{ validator_home_dir }}/config"
-validator_smr_storage_dir: "{{ validator_config_dir }}/smr_storage"
-validator_ledger_storage_dir: "{{ validator_config_dir }}/ledger_storage"
+
+validator_data_dir: "{{ validator_home_dir }}/data"
+validator_smr_storage_dir: "{{ validator_data_dir }}/smr_storage"
+validator_ledger_storage_dir: "{{ validator_data_dir }}/ledger_storage"
 
 validator_directories:
   - "{{ validator_home_dir }}"
   - "{{ validator_bin_dir }}"
+  - "{{ validator_data_dir }}"
   - "{{ validator_config_dir }}"
   - "{{ validator_log_dir }}"
   - "{{ validator_smr_storage_dir }}"
