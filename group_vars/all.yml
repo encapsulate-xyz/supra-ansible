@@ -9,7 +9,7 @@ tmp_dir: /tmp
 
 supra:
   rpc:
-    ip_address: 65.21.252.116
+    ip_address: 
     ports:
       p2p_port: 2700
     docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node:v6.3.0
@@ -20,7 +20,7 @@ supra:
     genesis_blob_url: https://testnet-snapshot.supra.com/configs/genesis_blob.zip
     supra_committees_json_url: https://testnet-snapshot.supra.com/configs/supra_committees.json
   validator:
-    ip_address: 5.78.88.207
+    ip_address: 
     ports:
       p2p_port: 28000
     docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node:v6.0.0
@@ -33,8 +33,6 @@ supra:
 
 promtail:
   service_identifier: promtail
-  source_url: https://github.com/grafana/loki/releases/download
-  file_extension: zip
   ports:
     http_listen_port: 9080
   job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
