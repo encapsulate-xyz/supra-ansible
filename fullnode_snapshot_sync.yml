@@ -1,14 +1,14 @@
 ---
-- name: Snapshot sync Supra RPC node
+- name: Snapshot sync Supra fullnode
   hosts: all
   become: true
   gather_facts: false
   vars:
-    allowed_node_types: [rpc]
+    allowed_node_types: [fullnode]
   vars_files:
     - group_vars/all.yml
   tasks:
-    - name: Setup environment and run rpc role
+    - name: Setup environment and run fullnode snapshot sync role
       when: type in allowed_node_types
       block:
         - name: Include environment setup tasks
@@ -16,6 +16,6 @@
         - name: Include common handlers
           ansible.builtin.include_role:
             name: common
-        - name: Include rpc snapshot sync role
+        - name: Include fullnode snapshot sync role
           ansible.builtin.include_role:
-            name: rpc_snapshot_sync
+            name: fullnode_snapshot_sync

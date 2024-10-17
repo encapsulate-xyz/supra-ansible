@@ -8,7 +8,7 @@
   vars_files:
     - group_vars/all.ymll
   tasks:
-    - name: Setup environment and run validator role
+    - name: Setup environment and run validator snapshot sync role
       when: type in allowed_node_types
       block:
         - name: Include environment setup tasks

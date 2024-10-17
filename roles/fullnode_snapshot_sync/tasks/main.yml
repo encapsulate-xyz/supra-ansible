@@ -1,0 +1,25 @@
+---
+- name: Unzip the snapshot
+  ansible.builtin.unarchive:
+    src: "{{ supra.fullnode.snapshot_url }}"
+    dest: "{{ tmp_dir }}"
+    owner: root
+    group: root
+    mode: "0755"
+    remote_src: true
+
+- name: Copy snapshot data into rpc store and archive
+  ansible.builtin.shell: |
+    cp {{ tmp_dir }}/snapshot/snapshot_*/store/* {{ fullnode_snapshot_sync_store_dir }}
+    cp {{ tmp_dir }}/snapshot/snapshot_*/archive/* {{ fullnode_snapshot_sync_archive_dir }}
+  args:
+    executable: /bin/bash
+  changed_when: false
+  notify:
+    - Reload service
+    - Restart service
+
+- name: Clean up the temporary files in /tmp
+  ansible.builtin.file:
+    path: "{{ tmp_dir }}/snapshot"
+    state: absent

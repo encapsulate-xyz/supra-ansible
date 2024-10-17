@@ -2,15 +2,20 @@
 - name: Unzip the snapshot
   ansible.builtin.unarchive:
     src: "{{ supra.validator.snapshot_url }}"
-    dest: "{{ validator_snapshot_sync_data_dir }}"
+    dest: "{{ tmp_dir }}"
     remote_src: true
 
-- name: Copy snapshot into smr_storage
+- name: Copy snapshot data into smr_storage
   ansible.builtin.shell: >
-    cp {{ validator_snapshot_sync_data_dir }}/snapshot/snapshot_*/store/* {{ validator_snapshot_sync_smr_storage_dir }}
+    cp {{ tmp_dir }}/snapshot/snapshot_*/store/* {{ validator_snapshot_sync_smr_storage_dir }}
   args:
     executable: /bin/bash
   changed_when: false
   notify:
     - Reload service
     - Restart service
+
+- name: Clean up the temporary files in /tmp
+  ansible.builtin.file:
+    path: "{{ tmp_dir }}/snapshot"
+    state: absent
