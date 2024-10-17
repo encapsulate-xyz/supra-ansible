@@ -1,6 +1,0 @@
----
-rpc_config_file_name: config.toml
-rpc_ca_certificate_pem_file_name: ca_certificate.pem
-rpc_client_supra_certificate_pem_file_name: client_supra_certificate.pem
-rpc_client_supra_key_pem_file_name: client_supra_key.pem
-rpc_supra_committees_json_file_name: supra_committees.json

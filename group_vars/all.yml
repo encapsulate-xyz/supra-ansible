@@ -8,36 +8,27 @@ default_node_types:
 tmp_dir: /tmp
 
 supra:
-  rpc:
-    ip_address:
+  fullnode:
     ports:
-      p2p_port: 2700
-    docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node:v6.3.0
+      p2p_port: 27000
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
-    ca_certificate_pem_url: https://testnet-snapshot.supra.com/certs/ca_certificate.pem
-    client_supra_certificate_pem_url: https://testnet-snapshot.supra.com/certs/client_supra_certificate.pem
-    client_supra_key_pem_url: https://testnet-snapshot.supra.com/certs/client_supra_key.pem
-    genesis_blob_url: https://testnet-snapshot.supra.com/configs/genesis_blob.zip
-    supra_committees_json_url: https://testnet-snapshot.supra.com/configs/supra_committees.json
   validator:
-    ip_address:
     ports:
       p2p_port: 28000
-    docker_image: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node:v6.0.0
-    ca_certificate_pem_url: https://gist.githubusercontent.com/sjadiya-supra/a25596f90a24ff5c4e2b3ebe9cfb57df/raw/5910a4322c90fd9f13ca804c316fcda7221d94ac/ca_certificate.pem
-    server_supra_certificate_pem_url: https://gist.githubusercontent.com/sjadiya-supra/f39dda12625b7155e4dbf3c8f6bdc891/raw/6b4bdcf8ccd5e348f5f2988ad757199ed88b6197/server_supra_certificate.pem
-    server_supra_key_pem_url: https://gist.githubusercontent.com/sjadiya-supra/e05d37d0cb9e72f806dc965d168c8c41/raw/a5e51ec29ec04f6a7d9e03e0fe08b64fbdfdbb03/server_supra_key.pem
-    genesis_configs_url: https://testnet-snapshot.supra.com/configs/genesis_configs.json
-    repo_zip_url: https://github.com/Entropy-Foundation/supra-nodeops-data/archive/refs/heads/master.zip
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
 
 promtail:
-  service_identifier: promtail
+  service_identifier: supra-promtail
+  source_url: https://github.com/grafana/loki/releases/download
+  file_extension: zip
   ports:
-    http_listen_port: 9080
-  job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
+    http_listen_port: 9081
+  job_name: supra-{{ ansible_default_ipv4.address }}
+
 telegraf:
-  source_url: https://dl.influxdata.com/telegraf/releases/telegraf-1.32.1_linux_amd64.tar.gz
-  service_identifier: telegraf
+  service_identifier: supra-telegraf
+  source_url: https://dl.influxdata.com/telegraf/releases
   node_name:
-  job_name: "{{ ansible_hostname }}-{{ ansible_default_ipv4.address }}"
+  job_name: supra-{{ ansible_default_ipv4.address }}

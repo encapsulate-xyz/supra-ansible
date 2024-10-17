@@ -1,0 +1,8 @@
+---
+fullnode_config_file_name: config.toml
+fullnode_ca_certificate_file_name: ca_certificate.pem
+fullnode_supra_certificate_file_name: supra_certificate.pem
+fullnode_supra_key_file_name: supra_key.pem
+fullnode_supra_committees_file_name: supra_committees.json
+fullnode_genesis_blob_file_name: genesis.blob
+fullnode_validator_ip_address: 176.9.8.81
