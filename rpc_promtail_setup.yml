@@ -5,7 +5,7 @@
   gather_facts: false
   vars:
     service_identifier: "{{ promtail.service_identifier }}"
-    log_path: /opt/supra-rpc/log/*.log
+    log_path: /opt/supra-fullnode/log/*.log
   vars_files:
     - group_vars/all.yml
   roles:

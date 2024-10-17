@@ -1,22 +1,37 @@
 ---
+- name: Include user creation task
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
+  vars:
+    home: "{{ promtail_home_dir }}"
+    directories: "{{ promtail_directories }}"
+    log_file_path: "{{ promtail_log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/extract_binary.yml
+  vars:
+    source_url: "{{ promtail.source_url }}/v{{ promtail.version }}"
+    suffix_url: "{{ promtail_default_binary_name }}.{{ promtail.file_extension }}"
+    binary_dest_path: "{{ promtail_bin_dir }}/{{ service_identifier }}"
+    extracted_binary_path: "{{ promtail_default_binary_name }}"
+
 - name: Copy promtail config
   ansible.builtin.template:
     src: promtail.yml.j2
-    dest: "{{ promtail_config_file_path }}"
+    dest: "{{ promtail_config_dir }}/promtail.yml"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Reload service
+    - Restart service
 
 - name: Copy promtail service file
   ansible.builtin.template:
     src: promtail.service.j2
-    dest: /etc/systemd/system/{{ service_identifier }}-supra.service
+    dest: /etc/systemd/system/{{ service_identifier }}.service
     owner: root
     group: root
     mode: "0644"
-
-- name: Start promtail service for supra monitoring
-  ansible.builtin.systemd:
-    name: "{{ service_identifier }}-supra"
-    state: restarted
-    enabled: true
+  notify:
+    - Reload service
+    - Restart service

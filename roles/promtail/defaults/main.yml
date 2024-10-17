@@ -5,5 +5,11 @@ promtail_bin_dir: "{{ promtail_home_dir }}/bin"
 promtail_log_dir: "{{ promtail_home_dir }}/log"
 promtail_config_dir: "{{ promtail_home_dir }}/config"
 
-promtail_log_file_path: "{{ promtail_log_dir }}/{{ service_identifier }}-supra.log"
+promtail_directories:
+  - "{{ promtail_home_dir }}"
+  - "{{ promtail_bin_dir }}"
+  - "{{ promtail_config_dir }}"
+  - "{{ promtail_log_dir }}"
+
+promtail_log_file_path: "{{ promtail_log_dir }}/{{ service_identifier }}.log"
 promtail_config_file_path: "{{ promtail_config_dir }}/{{ promtail_config_file_name }}"
