@@ -4,7 +4,6 @@
   vars:
     home: "{{ validator_home_dir }}"
     directories: "{{ validator_directories }}"
-    log_file_path: "{{ validator_log_file_path }}"
 
 - name: Create Supra Validator Docker container and copy binary
   vars:
@@ -77,8 +76,8 @@
     group: root
     mode: "{{ item.mode }}"
   loop:
-    - { file: normal_env, mode: "0644" }
-    - { file: secret_env, mode: "0600" }
+    - { file: normal_env_var, mode: "0644" }
+    - { file: secret_env_var, mode: "0600" }
 
 - name: Copy supra-validator-node systemd service file
   ansible.builtin.template:

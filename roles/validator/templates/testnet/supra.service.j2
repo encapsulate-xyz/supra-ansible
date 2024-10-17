@@ -4,17 +4,13 @@ Description=Supra Validator
 [Service]
 User={{ service_identifier }}
 Group={{ service_identifier }}
-Environment="SUPRA_HOME={{ validator_config_dir }}"
-Environment="SUPRA_LOG_DIR={{ validator_log_dir }}"
-Environment="SUPRA_MAX_LOG_FILE_SIZE=400000000"
-Environment="SUPRA_MAX_UNCOMPRESSED_LOGS=5"
-Environment="SUPRA_MAX_LOG_FILES=20"
-WorkingDirectory={{ validator_bin_dir }}
-ExecStart={{ validator_bin_dir }}/{{ service_identifier }}
+EnvironmentFile={{ validator_env_dir }}/normal_env_var
+EnvironmentFile={{ validator_env_dir }}/secret_env_var
+WorkingDirectory={{ validator_config_dir }}
+ExecStart={{ validator_bin_dir }}/{{ service_identifier }} node smr run -f
 Restart=always
 RestartSec=4
 LimitNOFILE=65536
-StandardOutput=append:{{ validator_log_file_path }}
 StandardError=inherit
 
 [Install]

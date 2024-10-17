@@ -22,9 +22,7 @@ validator_directories:
   - "{{ validator_smr_storage_dir }}"
   - "{{ validator_ledger_storage_dir }}"
 
-validator_log_file_path: "{{ validator_log_dir }}/{{ service_identifier }}.log"
 validator_smr_settings_file_path: "{{ validator_config_dir }}/{{ validator_smr_settings_file_name }}"
-
 validator_supra_key_file_path: "{{ validator_certs_dir }}/{{ validator_supra_key_file_name }}"
 validator_supra_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_supra_certificate_file_name }}"
 validator_ca_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_ca_certificate_file_name }}"
