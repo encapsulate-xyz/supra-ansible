@@ -1,5 +1,5 @@
 ---
-- name: Setup Promtail for rpc node
+- name: Setup Promtail for fullnode
   hosts: all
   become: true
   gather_facts: false
