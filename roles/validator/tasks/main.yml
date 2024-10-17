@@ -6,32 +6,20 @@
     directories: "{{ validator_directories }}"
     log_file_path: "{{ validator_log_file_path }}"
 
-- name: Remove existing supra validator binary
-  ansible.builtin.file:
-    path: "{{ validator_bin_dir }}/{{ service_identifier }}"
-    state: absent
-
 - name: Create Supra Validator Docker container and copy binary
+  vars:
+    container_name: supra_validator
   block:
-    - name: Create Supra validator Docker container
+    - name: Create temporary Supra validator container for binary extraction
       community.docker.docker_container:
-        name: supra_validator
-        image: "{{ supra.validator.docker_image }}"
-        state: started
+        name: "{{ container_name }}"
+        image: "{{ supra.validator.source_url }}:{{ supra.validator.version }}"
+        state: present
         recreate: true
-        volumes:
-          - "{{ validator_home_dir }}:/supra/configs"
-        env:
-          SUPRA_HOME: /supra/configs
-          SUPRA_LOG_DIR: /supra/configs/supra_node_logs
-        network_mode: host
-        detach: true
-        interactive: true
-        tty: true
 
     - name: Copy Supra validator binary
       ansible.builtin.shell: >
-        docker cp supra_validator:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
+        docker cp {{ container_name }}:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
       args:
         executable: /bin/bash
       register: copy_result
@@ -40,12 +28,18 @@
         - copy_result.rc != 0
         - "'No such container' in copy_result.stderr"
 
+    - name: Ensure Supra validator binary has the correct permissions
+      ansible.builtin.file:
+        path: "{{ validator_bin_dir }}/{{ service_identifier }}"
+        owner: root
+        group: root
+        mode: "0755"
+
   always:
     - name: Remove Supra validator container
       community.docker.docker_container:
-        name: supra_validator
+        name: "{{ container_name }}"
         state: absent
-        force_kill: true
 
 - name: Copy smr_settings.toml file
   ansible.builtin.template:
@@ -55,18 +49,36 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Download validator certificates, key, and genesis config
-  ansible.builtin.get_url:
-    url: "{{ item.url }}"
+- name: Copy validator certificates, key, and genesis config
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
     dest: "{{ item.dest }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
   loop:
-    - { url: "{{ supra.validator.ca_certificate_pem_url }}", dest: "{{ validator_ca_certificate_pem_file_path }}" }
-    - { url: "{{ supra.validator.server_supra_certificate_pem_url }}", dest: "{{ validator_server_supra_certificate_pem_file_path }}" }
-    - { url: "{{ supra.validator.server_supra_key_pem_url }}", dest: "{{ validator_server_supra_key_pem_file_path }}" }
-    - { url: "{{ supra.validator.genesis_configs_url }}", dest: "{{ validator_genesis_configs_json_file_path }}" }
+    - { src: "{{ env }}/certs/{{ validator_supra_key_file_name }}", dest: "{{ validator_supra_key_file_path }}" }
+    - { src: "{{ env }}/certs/{{ validator_supra_certificate_file_name }}", dest: "{{ validator_supra_certificate_file_path }}" }
+    - { src: "{{ env }}/certs/{{ validator_ca_certificate_file_name }}", dest: "{{ validator_ca_certificate_file_path }}" }
+    - { src: "{{ env }}/{{ validator_genesis_configs_file_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_genesis_blob_file_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_supra_committes_file_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_smr_public_key_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_smr_secret_key_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_identity_file_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_public_identity_file_name }}", dest: "{{ validator_config_dir }}" }
+    - { src: "{{ env }}/{{ validator_genesis_signature_file_name }}", dest: "{{ validator_config_dir }}" }
+
+- name: Copy supra validator env files
+  ansible.builtin.template:
+    src: "{{ env }}/{{ item.file }}"
+    dest: "{{ validator_env_dir }}/{{ item.file }}"
+    owner: root
+    group: root
+    mode: "{{ item.mode }}"
+  loop:
+    - { file: normal_env, mode: "0644" }
+    - { file: secret_env, mode: "0600" }
 
 - name: Copy supra-validator-node systemd service file
   ansible.builtin.template:

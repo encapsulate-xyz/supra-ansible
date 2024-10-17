@@ -1,6 +1,13 @@
 ---
 validator_smr_settings_file_name: smr_settings.toml
-validator_ca_certificate_pem_file_name: ca_certificate.pem
-validator_server_supra_certificate_pem_file_name: server_supra_certificate.pem
-validator_server_supra_key_pem_file_name: server_supra_key.pem
-validator_genesis_configs_json_file_name: genesis_configs.json
+validator_supra_key_file_name: supra_key.pem
+validator_supra_certificate_file_name: supra_certificate.pem
+validator_ca_certificate_file_name: ca_certificate.pem
+validator_supra_committes_file_name: supra_committees.json
+validator_genesis_configs_file_name: genesis_configs.json
+validator_genesis_blob_file_name: genesis.blob
+validator_smr_public_key_name: smr_public_key.json
+validator_smr_secret_key_name: smr_secret_key.pem
+validator_identity_file_name: validator_identity.pem
+validator_public_identity_file_name: validator_public_identity.toml
+validator_genesis_signature_file_name: 176.9.8.81:25000_genesis_signature.sig

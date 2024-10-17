@@ -25,10 +25,10 @@ timeout_delay_ms = 5000
 [node]
 connection_refresh_timeout_sec = 1
 resume = true
-root_ca_cert_path = "{{ validator_ca_certificate_pem_file_path }}"
+root_ca_cert_path = "{{ validator_ca_certificate_file_path }}"
 rpc_access_port = 26000
-server_cert_path = "{{ validator_server_supra_certificate_pem_file_path }}"
-server_private_key_path = "{{ validator_server_supra_key_pem_file_path }}"
+server_cert_path = "{{ validator_supra_certificate_file_path }}"
+server_private_key_path = "{{ validator_supra_key_file_path }}"
 
 [node.database_setup.dbs.chain_store.rocks_db]
 path = "{{ validator_smr_storage_dir }}"

@@ -2,30 +2,29 @@
 validator_home_dir: /opt/{{ service_identifier }}
 
 validator_bin_dir: "{{ validator_home_dir }}/bin"
+validator_data_dir: "{{ validator_home_dir }}/data"
 validator_log_dir: "{{ validator_home_dir }}/log"
 validator_config_dir: "{{ validator_home_dir }}/config"
-validator_keys_dir: "{{ validator_home_dir }}/keys"
+validator_certs_dir: "{{ validator_home_dir }}/certs"
+validator_env_dir: "{{ validator_home_dir }}/environment"
 
-validator_data_dir: "{{ validator_home_dir }}/data"
 validator_smr_storage_dir: "{{ validator_data_dir }}/smr_storage"
 validator_ledger_storage_dir: "{{ validator_data_dir }}/ledger_storage"
 
 validator_directories:
   - "{{ validator_home_dir }}"
   - "{{ validator_bin_dir }}"
-  - "{{ validator_keys_dir }}"
   - "{{ validator_data_dir }}"
-  - "{{ validator_config_dir }}"
   - "{{ validator_log_dir }}"
+  - "{{ validator_config_dir }}"
+  - "{{ validator_certs_dir }}"
+  - "{{ validator_env_dir }}"
   - "{{ validator_smr_storage_dir }}"
-
-validator_env:
-  SUPRA_HOME: "{{ validator_config_dir }}"
-  SUPRA_LOG_DIR: "{{ validator_log_dir }}"
+  - "{{ validator_ledger_storage_dir }}"
 
 validator_log_file_path: "{{ validator_log_dir }}/{{ service_identifier }}.log"
 validator_smr_settings_file_path: "{{ validator_config_dir }}/{{ validator_smr_settings_file_name }}"
-validator_genesis_configs_json_file_path: "{{ validator_data_dir }}/{{ validator_genesis_configs_json_file_name }}"
-validator_ca_certificate_pem_file_path: "{{ validator_keys_dir }}/{{ validator_ca_certificate_pem_file_name }}"
-validator_server_supra_certificate_pem_file_path: "{{ validator_keys_dir }}/{{ validator_server_supra_certificate_pem_file_name }}"
-validator_server_supra_key_pem_file_path: "{{ validator_keys_dir }}/{{ validator_server_supra_key_pem_file_name }}"
+
+validator_supra_key_file_path: "{{ validator_certs_dir }}/{{ validator_supra_key_file_name }}"
+validator_supra_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_supra_certificate_file_name }}"
+validator_ca_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_ca_certificate_file_name }}"
