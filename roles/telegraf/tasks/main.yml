@@ -6,29 +6,13 @@
     directories: "{{ telegraf_directories }}"
     log_file_path: "{{ telegraf_log_file_path }}"
 
-- name: Download and unarchive the binary
-  ansible.builtin.unarchive:
-    src: "{{ telegraf.source_url }}"
-    dest: "{{ tmp_dir }}"
-    remote_src: true
-    owner: root
-    group: root
-    mode: "0755"
-
-- name: Copy the binary file
-  ansible.builtin.copy:
-    src: "{{ tmp_dir }}/{{ telegraf_extracted_binary_path }}"
-    dest: "{{ telegraf_bin_dir }}"
-    remote_src: true
-    owner: root
-    group: root
-    force: true
-    mode: "0755"
-
-- name: Clean up the temporary files in /tmp
-  ansible.builtin.file:
-    path: "{{ tmp_dir }}/{{ telegraf_extracted_binary_path }}"
-    state: absent
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/extract_binary.yml
+  vars:
+    source_url: "{{ telegraf.source_url }}"
+    suffix_url: telegraf-{{ telegraf.version }}_linux_amd64.tar.gz
+    extracted_binary_path: "{{ telegraf_extracted_binary_dir }}/usr/bin"
+    binary_dest_path: "{{ telegraf_bin_dir }}"
 
 - name: Copy telegraf config
   ansible.builtin.template:

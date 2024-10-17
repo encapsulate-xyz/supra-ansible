@@ -2,16 +2,10 @@
 Description=Telegraf
 
 [Service]
-User=telegraf
-Group=telegraf
+User={{ service_identifier }}
+Group={{ service_identifier }}
 Type=notify
-NotifyAccess=all
-ExecStart={{ telegraf_bin_dir }}/{{ service_identifier }} -config {{ telegraf_config_file_path }} -config-directory {{ telegraf_config_dir }} $TELEGRAF_OPTS
-ExecReload=/bin/kill -HUP $MAINPID
-RestartForceExitStatus=SIGPIPE
-KillMode=mixed
-TimeoutStopSec=5
-LimitMEMLOCK=8M:8M
+ExecStart={{ telegraf_bin_dir }}/{{ service_identifier }} -config {{ telegraf_config_file_path }}
 Restart=always
 RestartSec=4
 LimitNOFILE=65536
