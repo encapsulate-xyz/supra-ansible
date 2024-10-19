@@ -32,3 +32,4 @@ telegraf:
   source_url: https://dl.influxdata.com/telegraf/releases
   node_name:
   job_name: supra-{{ ansible_default_ipv4.address }}
+  file_extension: tar.gz
