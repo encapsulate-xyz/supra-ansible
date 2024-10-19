@@ -68,7 +68,7 @@
     - { src: "{{ env }}/{{ validator_public_identity_file_name }}", dest: "{{ validator_config_dir }}" }
     - { src: "{{ env }}/{{ validator_genesis_signature_file_name }}", dest: "{{ validator_config_dir }}" }
 
-- name: Copy supra validator env files with renamed destination
+- name: Copy supra validator systemd environment files
   ansible.builtin.template:
     src: "{{ env }}/{{ item.file }}"
     dest: "{{ validator_env_dir }}/{{ item.dest_name }}"
