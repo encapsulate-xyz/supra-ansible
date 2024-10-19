@@ -4,7 +4,7 @@ Description=Supra fullnode
 [Service]
 User={{ service_identifier }}
 Group={{ service_identifier }}
-EnvironmentFile={{ fullnode_env_dir }}/normal_env_var
+EnvironmentFile={{ fullnode_env_dir }}/{{ service_identifier }}.env
 WorkingDirectory={{ fullnode_config_dir }}
 ExecStart={{ fullnode_bin_dir }}/{{ service_identifier }}
 Restart=always

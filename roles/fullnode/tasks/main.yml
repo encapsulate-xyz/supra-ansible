@@ -62,10 +62,10 @@
     - { src: "{{ env }}/{{ fullnode_supra_committees_file_name }}", dest: "{{ fullnode_config_dir }}" }
     - { src: "{{ env }}/{{ fullnode_genesis_blob_file_name }}", dest: "{{ fullnode_config_dir }}" }
 
-- name: Copy supra fullnode env files
+- name: Copy supra fullnode env file
   ansible.builtin.template:
     src: "{{ env }}/normal_env_var"
-    dest: "{{ fullnode_env_dir }}"
+    dest: "{{ fullnode_env_dir }}/{{ service_identifier }}.env"
     owner: root
     group: root
     mode: "0644"
