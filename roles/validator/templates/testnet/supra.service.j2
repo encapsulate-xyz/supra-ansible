@@ -4,8 +4,8 @@ Description=Supra Validator
 [Service]
 User={{ service_identifier }}
 Group={{ service_identifier }}
-EnvironmentFile={{ validator_env_dir }}/normal_env_var
-EnvironmentFile={{ validator_env_dir }}/secret_env_var
+EnvironmentFile={{ validator_env_dir }}/{{ service_identifier }}.env
+EnvironmentFile={{ validator_env_dir }}/{{ service_identifier }}.secret.env
 WorkingDirectory={{ validator_config_dir }}
 ExecStart={{ validator_bin_dir }}/{{ service_identifier }} node smr run -f
 Restart=always
