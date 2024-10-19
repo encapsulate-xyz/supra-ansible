@@ -76,8 +76,8 @@
     group: "{{ service_identifier }}"
     mode: "{{ item.mode }}"
   loop:
-    - { file: general.env, dest_name: "{{ service_identifier }}.env", mode: "0644" }
-    - { file: secrets.env, dest_name: "{{ service_identifier }}.secrets.env", mode: "0600" }
+    - { file: general.env.j2, dest_name: "{{ service_identifier }}.env", mode: "0644" }
+    - { file: secrets.env.j2, dest_name: "{{ service_identifier }}.secrets.env", mode: "0600" }
 
 - name: Copy supra-validator-node systemd service file
   ansible.builtin.template:
