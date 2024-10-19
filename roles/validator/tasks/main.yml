@@ -68,21 +68,16 @@
     - { src: "{{ env }}/{{ validator_public_identity_file_name }}", dest: "{{ validator_config_dir }}" }
     - { src: "{{ env }}/{{ validator_genesis_signature_file_name }}", dest: "{{ validator_config_dir }}" }
 
-- name: Copy supra validator normal env file
+- name: Copy supra validator env files with renamed destination
   ansible.builtin.template:
-    src: "{{ env }}/normal_env_var"
-    dest: "{{ validator_env_dir }}/{{ service_identifier }}.env"
-    owner: root
-    group: root
-    mode: "0644"
-
-- name: Copy supra validator secret env file
-  ansible.builtin.template:
-    src: "{{ env }}/secret_env_var"
-    dest: "{{ validator_env_dir }}/{{ service_identifier }}.secret.env"
-    owner: root
-    group: root
-    mode: "0644"
+    src: "{{ env }}/{{ item.file }}"
+    dest: "{{ validator_env_dir }}/{{ item.dest_name }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "{{ item.mode }}"
+  loop:
+    - { file: general.env, dest_name: "{{ service_identifier }}.env", mode: "0644" }
+    - { file: secrets.env, dest_name: "{{ service_identifier }}.secrets.env", mode: "0600" }
 
 - name: Copy supra-validator-node systemd service file
   ansible.builtin.template:

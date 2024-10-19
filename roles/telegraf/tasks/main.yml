@@ -10,9 +10,9 @@
   ansible.builtin.include_tasks: tasks/extract_binary.yml
   vars:
     source_url: "{{ telegraf.source_url }}"
-    suffix_url: telegraf-{{ telegraf.version }}_linux_amd64.tar.gz
-    extracted_binary_path: "{{ telegraf_extracted_binary_dir }}/usr/bin"
-    binary_dest_path: "{{ telegraf_bin_dir }}"
+    suffix_url: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}_{{ ansible_system | lower }}_{{ system_architecture }}.{{ telegraf.file_extension }}"
+    extracted_binary_path: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}/usr/bin"
+    binary_dest_path: "{{ telegraf_bin_dir }}/{{ service_identifier }}"
 
 - name: Copy telegraf config
   ansible.builtin.template:
