@@ -11,12 +11,12 @@ supra:
   fullnode:
     ports:
       p2p_port: 27000
-    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/rpc-node
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/rpc-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
   validator:
     ports:
       p2p_port: 28000
-    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-testnet/validator-node
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
 
 promtail:
