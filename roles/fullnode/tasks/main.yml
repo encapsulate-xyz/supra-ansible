@@ -33,6 +33,9 @@
         owner: root
         group: root
         mode: "0755"
+      notify:
+        - Reload service
+        - Restart service
 
   always:
     - name: Remove Supra fullnode container
@@ -48,7 +51,27 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Copy Supra fullnode certificates, keys and genesis
+- name: Download and Copy Genesis Blob Based on Environment
+  block:
+  - name: Download genesis from URL
+    get_url:
+      url: https://mainnet-data.supra.com/configs/genesis.blob
+      dest: "{{ fullnode_config_dir }}"
+      owner: "{{ service_identifier }}"
+      group: "{{ service_identifier }}"
+      mode: "0644"
+    when: env == mainnet
+  
+  - name: Copy genesis file
+    ansible.builtin.copy:
+      src: "{{ env }}/{{ fullnode_genesis_blob_file_name }}"
+      dest: "{{ fullnode_config_dir }}"
+      owner: "{{ service_identifier }}"
+      group: "{{ service_identifier }}"
+      mode: "0644"
+    when: env == testnet
+
+- name: Copy Supra fullnode certificates, keys
   ansible.builtin.copy:
     src: "{{ item.src }}"
     dest: "{{ item.dest }}"
@@ -85,5 +108,12 @@
   community.general.ufw:
     rule: allow
     port: "{{ supra.fullnode.ports.p2p_port }}"
+    proto: tcp
+    comment: Open p2p port for supra fullnode
+
+- name: Open traffic to supra validator node p2p port
+  community.general.ufw:
+    rule: allow
+    port: "{{ supra.validator.ports.p2p_port }}"
     proto: tcp
     comment: Open p2p port for supra fullnode
