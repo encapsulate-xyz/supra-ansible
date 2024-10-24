@@ -8,7 +8,7 @@
   vars_files:
     - group_vars/all.yml
     - group_vars/default.yml
-  
+
   tasks:
     - name: Include common handlers
       ansible.builtin.include_role:

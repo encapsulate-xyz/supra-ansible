@@ -6,7 +6,7 @@ supra:
       p2p_port: 30000
     snapshot_url: https://mainnet-data.supra.com/snapshots/latest_snapshot_rpc.zip
   validator:
-    version: v6.0.0
+    version: v7.1.2
     ports:
       p2p_port: 29000
     snapshot_url: https://mainnet-data.supra.com/snapshots/latest_snapshot.zip

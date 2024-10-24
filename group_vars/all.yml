@@ -15,7 +15,7 @@ supra:
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
   validator:
     ports:
-      p2p_port: 28000
+      p2p_port: 26000
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
 
