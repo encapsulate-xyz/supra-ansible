@@ -87,7 +87,7 @@
   data_format = "influx"
 
 [[inputs.exec]]
-  commands = ["sh -c \"docker images | grep '{{ telegraf.node_name }}' | awk '{print \\$2}'\""]
+  commands = ["sh -c \"echo '{{ vars[project][type].version }}\""]
   timeout = "5s"
   data_format = "value"
   data_type = "string"
