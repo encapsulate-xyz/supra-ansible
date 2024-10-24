@@ -39,7 +39,7 @@ consensus_client_private_key_path = "{{ fullnode_supra_key_file_path }}"
 # The path to the TLS root certificate authority certificate.
 consensus_root_ca_cert_path = "{{ fullnode_ca_certificate_file_path }}"
 # The websocket address of the attached validator.
-consensus_rpc = "ws://{{ fullnode_validator_ip_address }}:29000"
+consensus_rpc = "ws://{{ fullnode_validator_ip_address.mainnet }}:29000"
 # If true, all components will attempt to load their previous state from disk. Otherwise,
 # all components will start in their default state. Should always be `true` for testnet and
 # mainnet.
