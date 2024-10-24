@@ -8,5 +8,11 @@
     log_path: "{{ '/opt/supra/log/*.log' if type == 'validator' else '/opt/supra-fullnode/log/*.log' }}"
   vars_files:
     - group_vars/all.yml
-  roles:
-    - promtail
+
+  tasks:
+    - name: Include common handlers
+      ansible.builtin.include_role:
+        name: common
+    - name: Include promtail role
+      ansible.builtin.include_role:
+        name: promtail

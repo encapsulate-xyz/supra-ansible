@@ -8,6 +8,11 @@
   vars_files:
     - group_vars/all.yml
     - group_vars/default.yml
-  roles:
-    - common
-    - telegraf
+  
+  tasks:
+    - name: Include common handlers
+      ansible.builtin.include_role:
+        name: common
+    - name: Include promtail role
+      ansible.builtin.include_role:
+        name: promtail

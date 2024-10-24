@@ -9,12 +9,18 @@
     - group_vars/all.yml
     - group_vars/vault.yml
     - group_vars/{{ env }}.yml
-  tasks:
-    - name: Setup environment and run validator role
+  
+  pre_tasks:
+    - name: Setup environment
       when: type in allowed_node_types
       block:
         - name: Include environment setup tasks
           ansible.builtin.include_tasks: tasks/setup_environment.yml
+  
+  tasks:
+    - name: Run validator role
+      when: type in allowed_node_types
+      block:
         - name: Include common handlers
           ansible.builtin.include_role:
             name: common
