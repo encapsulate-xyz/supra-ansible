@@ -11,25 +11,26 @@
     - gnupg
     - curl
 
-- name: Add Google Cloud SDK GPG key
-  ansible.builtin.apt_key:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    state: present
+- name: Download and Install gcloud GPG key
+  ansible.builtin.shell: |
+    set -o pipefail
+    wget -q -O - https://packages.cloud.google.com/apt/doc/apt-key.gpg | gpg --dearmor | tee /etc/apt/keyrings/gcloud.gpg > /dev/null
+  args:
+    creates: /etc/apt/keyrings/gcloud.gpg
+  changed_when: false
 
-- name: Download Google Cloud SDK GPG key
-  ansible.builtin.get_url:
-    url: https://packages.cloud.google.com/apt/doc/apt-key.gpg
-    dest: /usr/share/keyrings/cloud.google.gpg
+- name: Set proper permissions for gcloud GPG key
+  ansible.builtin.file:
+    path: /etc/apt/keyrings/gcloud.gpg
     owner: root
     group: root
     mode: "0644"
-    checksum: sha256:3ecc63922b7795eb23fdc449ff9396f9114cb3cf186d6f5b53ad4cc3ebfbb11f
 
-- name: Add Google Cloud SDK repository
+- name: Add gcloud APT repository
   ansible.builtin.apt_repository:
-    repo: deb https://packages.cloud.google.com/apt cloud-sdk main
+    repo: deb [signed-by=/etc/apt/keyrings/gcloud.gpg] https://packages.cloud.google.com/apt cloud-sdk main
     state: present
-    filename: google-cloud-sdk
+    filename: gcloud
 
 - name: Install gcloud-cli
   ansible.builtin.apt:
