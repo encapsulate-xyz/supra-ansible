@@ -86,13 +86,6 @@
   timeout = "5s"
   data_format = "influx"
 
-[[inputs.exec]]
-  commands = ["sh -c \"echo '{{ vars[project][type].version }}\""]
-  timeout = "5s"
-  data_format = "value"
-  data_type = "string"
-  name_override = "supra_version"
-
 [[outputs.influxdb_v2]]
   ## The URLs of the InfluxDB cluster nodes.
   ##
