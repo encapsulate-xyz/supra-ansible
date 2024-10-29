@@ -60,7 +60,7 @@
         owner: "{{ service_identifier }}"
         group: "{{ service_identifier }}"
         mode: "0644"
-      when: env == mainnet
+      when: env == "mainnet"
 
     - name: Copy genesis file
       ansible.builtin.copy:
@@ -69,7 +69,7 @@
         owner: "{{ service_identifier }}"
         group: "{{ service_identifier }}"
         mode: "0644"
-      when: env == testnet
+      when: env == "testnet"
 
 - name: Copy Supra fullnode certificates, keys
   ansible.builtin.copy:
@@ -87,15 +87,15 @@
 
 - name: Copy supra fullnode env file
   ansible.builtin.template:
-    src: "{{ env }}/normal_env_var"
+    src: general.env.j2
     dest: "{{ fullnode_env_dir }}/{{ service_identifier }}.env"
     owner: root
     group: root
     mode: "0644"
 
-- name: Copy supra-fullnode-node systemd service file
+- name: Copy systemd service file
   ansible.builtin.template:
-    src: "{{ env }}/supra-fullnode.service.j2"
+    src: "{{ env }}/supra_fullnode.service.j2"
     dest: /etc/systemd/system/{{ service_identifier }}.service
     owner: root
     group: root
