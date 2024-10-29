@@ -18,6 +18,7 @@ supra:
       p2p_port: 26000
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
+    genesis_url: https://mainnet-data.supra.com/configs/genesis.blob
 
 promtail:
   service_identifier: supra-promtail

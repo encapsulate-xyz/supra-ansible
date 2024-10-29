@@ -55,21 +55,30 @@
   block:
     - name: Download genesis from URL
       ansible.builtin.get_url:
-        url: https://mainnet-data.supra.com/configs/genesis.blob
+        url: "{{ supra.validator.genesis_url }}"
         dest: "{{ validator_config_dir }}"
         owner: "{{ service_identifier }}"
         group: "{{ service_identifier }}"
         mode: "0644"
-      when: env == mainnet
+      when: env == "mainnet"
+
+    - name: Copy genesis config arbitary data file
+      ansible.builtin.copy:
+        src: "{{ env }}/genesis_config_arbitrary_data.json"
+        dest: "{{ validator_config_dir }}"
+        owner: "{{ service_identifier }}"
+        group: "{{ service_identifier }}"
+        mode: "0644"
+      when: env == "mainnet"
 
     - name: Copy genesis file
       ansible.builtin.copy:
         src: "{{ env }}/{{ validator_genesis_blob_file_name }}"
-        dest: "{{ fullnode_config_dir }}"
+        dest: "{{ validator_config_dir }}"
         owner: "{{ service_identifier }}"
         group: "{{ service_identifier }}"
         mode: "0644"
-      when: env == testnet
+      when: env == "testnet"
 
 - name: Copy validator certificates, key, and genesis config
   ansible.builtin.copy:
