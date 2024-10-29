@@ -101,7 +101,7 @@
 
 - name: Copy supra validator systemd environment files
   ansible.builtin.template:
-    src: "{{ env }}/{{ general.env.j2 }}"
+    src: general.env.j2
     dest: "{{ validator_env_dir }}/{{ service_identifier }}.env"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
