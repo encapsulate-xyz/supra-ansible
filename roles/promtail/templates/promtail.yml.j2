@@ -1,6 +1,6 @@
 server:
   http_listen_port: {{ promtail.ports.http_listen_port }}
-  grpc_listen_port: 0
+  grpc_listen_port: {{ promtail.ports.grpc_listen_port }}
 
 positions:
   filename: {{ promtail_home_dir }}/positions-supra.yml

@@ -25,7 +25,8 @@ promtail:
   source_url: https://github.com/grafana/loki/releases/download
   file_extension: zip
   ports:
-    http_listen_port: 9081
+    http_listen_port: 9083
+    grpc_listen_port: 9084
   job_name: supra-{{ ansible_default_ipv4.address }}
 
 telegraf:

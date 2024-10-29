@@ -17,7 +17,7 @@
 - name: Copy promtail config
   ansible.builtin.template:
     src: promtail.yml.j2
-    dest: "{{ promtail_config_dir }}/promtail.yml"
+    dest: "{{ promtail_config_file_path }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
