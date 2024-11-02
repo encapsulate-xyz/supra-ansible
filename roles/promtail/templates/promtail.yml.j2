@@ -1,9 +1,9 @@
 server:
-  http_listen_port: {{ promtail.ports.http_listen_port }}
+  http_listen_port: {{ promtail.ports.http_listen_port[type] }}
   grpc_listen_port: 0
 
 positions:
-  filename: {{ promtail_home_dir }}/positions-supra.yml
+  filename: {{ promtail_position_file_path }}
 
 clients:
   - url: https://loki.services.supra.com/loki/api/v1/push
@@ -14,5 +14,5 @@ scrape_configs:
       - targets:
         - localhost
         labels:
-          job: {{ promtail.job_name }}
-          __path__: {{ log_path }}
+          job: {{ org }}-{{ node_service_identifier }}
+          __path__: /opt/{{ node_service_identifier }}/log/*.log

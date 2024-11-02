@@ -17,13 +17,20 @@
 - name: Copy promtail config
   ansible.builtin.template:
     src: promtail.yml.j2
-    dest: "{{ promtail_config_dir }}/promtail.yml"
+    dest: "{{ promtail_config_file_path }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
   notify:
-    - Reload service
     - Restart service
+
+- name: Create promtail position file
+  ansible.builtin.file:
+    path: "{{ promtail_position_file_path }}"
+    state: touch
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
 
 - name: Copy promtail service file
   ansible.builtin.template:

@@ -20,12 +20,13 @@ supra:
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
 
 promtail:
-  service_identifier: supra-promtail
+  service_identifier: promtail
   source_url: https://github.com/grafana/loki/releases/download
   file_extension: zip
   ports:
-    http_listen_port: 9081
-  job_name: supra-{{ ansible_default_ipv4.address }}
+    http_listen_port:
+      validator: 9081
+      fullnode: 9082
 
 telegraf:
   service_identifier: supra-telegraf

@@ -4,8 +4,9 @@
   become: true
   gather_facts: false
   vars:
-    service_identifier: "{{ promtail.service_identifier }}"
-    log_path: "{{ '/opt/supra/log/*.log' if type == 'validator' else '/opt/supra-fullnode/log/*.log' }}"
+    node_service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
+    # because this promtail is being used for pushing to loki.services.supra.com, its service_identifier includes the node_service_identifier
+    service_identifier: "{{ node_service_identifier }}-{{ promtail.service_identifier }}"
   vars_files:
     - group_vars/all.yml
 
