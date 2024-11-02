@@ -1,5 +1,5 @@
 [agent]
-  hostname = "{{ telegraf.job_name }}"
+  hostname = "{{ org }}-{{ node_service_identifier }}"
   flush_interval = "15s"
   interval = "15s"
 # Read metrics about cpu usage
@@ -82,12 +82,12 @@
 [[inputs.net]]
 
 [[inputs.exec]]
-  commands = ["/bin/bash -c 'curl -s https://gist.githubusercontent.com/Supra-RaghulRajeshR/33d027b21be6f190c0c66e34fee3a9a1/raw/131f56b49ea294d320b159a379775f7d63b50acb/check_port.sh | bash -s 25000 26000'"]
+  commands = ["/bin/bash -c 'curl -s https://gist.githubusercontent.com/Supra-RaghulRajeshR/33d027b21be6f190c0c66e34fee3a9a1/raw/131f56b49ea294d320b159a379775f7d63b50acb/check_port.sh | bash -s {{ supra[type].ports.node_public_identity_port | default('') }} {{ supra[type].ports.p2p_port }}'"]
   timeout = "5s"
   data_format = "influx"
 
 [[inputs.exec]]
-  commands = ["sh -c \"echo '{{ vars[project][type].version }}\""]
+  commands = ["sh -c \"echo '{{ supra[type].version }}\""]
   timeout = "5s"
   data_format = "value"
   data_type = "string"
@@ -102,7 +102,7 @@
   urls = ["http://34.100.248.227:8086"]
 
   ## Token for authentication.
-  token = "P7jDj8aK40pnSqfyX4m4OZy878PK1wd6B_ZPhRjeIeY6mqA-XVRZinqjFh2GdE6sS5O_jK92Cj5P9IZ0v-qBNw=="
+  token = "{{ vault.supra.external.telegraf_token }}"
 
   ## Organization is the name of the organization you wish to write to; must exist.
   organization = "Entropy Foundation"

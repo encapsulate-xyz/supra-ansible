@@ -4,7 +4,9 @@
   become: true
   gather_facts: true
   vars:
-    service_identifier: "{{ telegraf.service_identifier }}"
+    node_service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
+    # because this telegraf is being used for pushing to supra team: http://34.100.248.227:8086, its service_identifier includes the node_service_identifier
+    service_identifier: "{{ node_service_identifier }}-{{ telegraf.service_identifier }}"
   vars_files:
     - group_vars/all.yml
     - group_vars/default.yml
@@ -15,4 +17,4 @@
         name: common
     - name: Include promtail role
       ansible.builtin.include_role:
-        name: promtail
+        name: telegraf
