@@ -9,6 +9,7 @@
     service_identifier: "{{ node_service_identifier }}-{{ promtail.service_identifier }}"
   vars_files:
     - group_vars/all.yml
+    - group_vars/default.yml
 
   tasks:
     - name: Include common handlers
