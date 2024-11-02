@@ -9,15 +9,9 @@ tmp_dir: /tmp
 
 supra:
   fullnode:
-    ports:
-      p2p_port: 27000
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/rpc-node
-    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
   validator:
-    ports:
-      p2p_port: 26000
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
-    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
 
 promtail:
   service_identifier: promtail
@@ -29,7 +23,7 @@ promtail:
       fullnode: 9082
 
 telegraf:
-  service_identifier: supra-telegraf
+  service_identifier: telegraf
   source_url: https://dl.influxdata.com/telegraf/releases
   node_name:
   job_name: supra-{{ ansible_default_ipv4.address }}

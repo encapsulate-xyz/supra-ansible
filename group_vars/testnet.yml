@@ -1,6 +1,13 @@
 ---
 supra:
-  fullnode:
-    version: v6.3.0
   validator:
     version: v6.0.0
+    ports:
+      node_public_identity_port: 25000
+      p2p_port: 26000
+    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
+  fullnode:
+    version: v6.3.0
+    ports:
+      p2p_port: 27000
+    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
