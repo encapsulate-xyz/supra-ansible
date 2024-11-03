@@ -11,7 +11,7 @@
   vars:
     source_url: "{{ telegraf.source_url }}"
     suffix_url: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}_{{ ansible_system | lower }}_{{ system_architecture }}.{{ telegraf.file_extension }}"
-    extracted_binary_path: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}/usr/bin"
+    extracted_binary_path: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}/usr/bin/{{ telegraf_default_binary_name }}"
     binary_dest_path: "{{ telegraf_bin_dir }}/{{ service_identifier }}"
 
 - name: Copy telegraf config

@@ -6,10 +6,20 @@
   vars:
     node_service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
     # because this telegraf is being used for pushing to supra team: http://34.100.248.227:8086, its service_identifier includes the node_service_identifier
-    service_identifier: "{{ node_service_identifier }}-{{ telegraf.service_identifier }}"
+    service_identifier: "{{ node_service_identifier }}-{{ telegraf.service_identifier_suffix }}"
+    system_architecture: >-
+      {%- if ansible_architecture == 'x86_64' -%}
+        amd64
+      {%- elif ansible_architecture == 'aarch64' -%}
+        arm64
+      {%- else -%}
+        {{ ansible_architecture }}
+      {%- endif -%}
   vars_files:
     - group_vars/all.yml
     - group_vars/default.yml
+    - group_vars/vault.yml
+    - group_vars/{{ env }}.yml
 
   tasks:
     - name: Include common handlers
