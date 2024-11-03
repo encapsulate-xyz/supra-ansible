@@ -1,7 +1,7 @@
 ---
 supra:
   validator:
-    version: v6.0.0
+    version: v6.3.0
     ports:
       node_public_identity_port: 25000
       p2p_port: 26000

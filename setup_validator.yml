@@ -16,7 +16,6 @@
       block:
         - name: Include environment setup tasks
           ansible.builtin.include_tasks: tasks/setup_environment.yml
-
   tasks:
     - name: Run validator role
       when: type in allowed_node_types

@@ -42,3 +42,6 @@
 - name: Confirm deployment details
   ansible.builtin.pause:
     prompt: Press 'Enter' to continue with the deployment or Ctrl+C to cancel
+
+- name: Include configure ufw task
+  ansible.builtin.include_tasks: tasks/configure_ufw.yml

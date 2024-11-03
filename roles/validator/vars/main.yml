@@ -1,13 +1,24 @@
 ---
+# Config file names
 validator_smr_settings_file_name: smr_settings.toml
+
+# Supra files names
 validator_supra_key_file_name: supra_key.pem
 validator_supra_certificate_file_name: supra_certificate.pem
-validator_ca_certificate_file_name: ca_certificate.pem
-validator_supra_committes_file_name: supra_committees.json
-validator_genesis_configs_file_name: genesis_configs.json
-validator_genesis_blob_file_name: genesis.blob
+validator_supra_ca_file_name: supra_ca.pem
+
+# Network files names
+validator_supra_committees_file_name: supra_committees.json
+validator_genesis_file_name: genesis.blob
+
+# Identity files names
 validator_smr_public_key_name: smr_public_key.json
+validator_public_identity_file_name: validator_public_identity.toml
+
+# Key files names
 validator_smr_secret_key_name: smr_secret_key.pem
 validator_identity_file_name: validator_identity.pem
-validator_public_identity_file_name: validator_public_identity.toml
-validator_genesis_signature_file_name: 176.9.8.81:25000_genesis_signature.sig
+
+# Environment file names
+validator_environment_secrets_file_name: "{{ service_identifier }}.secrets.env"
+validator_environment_general_file_name: "{{ service_identifier }}.env"

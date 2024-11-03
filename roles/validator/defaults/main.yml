@@ -22,7 +22,22 @@ validator_directories:
   - "{{ validator_smr_storage_dir }}"
   - "{{ validator_ledger_storage_dir }}"
 
+validator_environment_secrets_file_path: "{{ validator_env_dir }}/{{ validator_environment_secrets_file_name }}"
+validator_environment_general_file_path: "{{ validator_env_dir }}/{{ validator_environment_general_file_name }}"
+
 validator_smr_settings_file_path: "{{ validator_config_dir }}/{{ validator_smr_settings_file_name }}"
+
 validator_supra_key_file_path: "{{ validator_certs_dir }}/{{ validator_supra_key_file_name }}"
 validator_supra_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_supra_certificate_file_name }}"
-validator_ca_certificate_file_path: "{{ validator_certs_dir }}/{{ validator_ca_certificate_file_name }}"
+validator_supra_ca_file_path: "{{ validator_certs_dir }}/{{ validator_supra_ca_file_name }}"
+
+
+validator_genesis_file_path: "{{ validator_config_dir }}/{{ validator_genesis_file_name }}"
+validator_supra_committees_file_path: "{{ validator_config_dir }}/{{ validator_supra_committees_file_name }}"
+
+
+validator_public_identity_file_path: "{{ validator_config_dir }}/{{ validator_public_identity_file_name }}"
+validator_smr_public_key_path: "{{ validator_config_dir }}/{{ validator_smr_public_key_name }}"
+
+validator_smr_secret_key_path: "{{ validator_config_dir }}/{{ validator_smr_secret_key_name }}"
+validator_identity_file_path: "{{ validator_config_dir }}/{{ validator_identity_file_name }}"
