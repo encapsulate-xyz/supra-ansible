@@ -11,6 +11,7 @@
     - python3-pip
     - ca-certificates
     - curl
+    - gnupg
     - apt-transport-https
     - software-properties-common
     - python3-toml
