@@ -1,0 +1,17 @@
+[Unit]
+Description=Supra Validator
+
+[Service]
+User={{ service_identifier }}
+Group={{ service_identifier }}
+EnvironmentFile={{ validator_env_dir }}/{{ service_identifier }}.env
+EnvironmentFile={{ validator_env_dir }}/{{ service_identifier }}.secrets.env
+WorkingDirectory={{ validator_config_dir }}
+ExecStart={{ validator_bin_dir }}/{{ service_identifier }} node smr run --force-pass
+Restart=always
+RestartSec=4
+LimitNOFILE=65536
+MemoryMax=64G
+
+[Install]
+WantedBy=multi-user.target

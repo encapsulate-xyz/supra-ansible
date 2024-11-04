@@ -11,6 +11,7 @@ ExecStart={{ validator_bin_dir }}/{{ service_identifier }} node smr run --force-
 Restart=always
 RestartSec=4
 LimitNOFILE=65536
+MemoryMax=64G
 
 [Install]
 WantedBy=multi-user.target

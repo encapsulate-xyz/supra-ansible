@@ -7,6 +7,7 @@ supra:
       node_public_identity_port: 28000
       p2p_port: 29000
     snapshot_url: https://mainnet-data.supra.com/snapshots/latest_snapshot.zip
+    genesis_url: https://mainnet-data.supra.com/configs/genesis.blob
   fullnode:
     version: v7.1.3
     ports:

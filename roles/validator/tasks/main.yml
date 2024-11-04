@@ -68,16 +68,22 @@
     - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ validator_supra_certificate_file_path }}" }
     - { src: "{{ env }}/certs/supra_ca.pem", dest: "{{ validator_supra_ca_file_path }}" }
 
-- name: Copy network files genesis and committees
-  ansible.builtin.copy:
-    src: "{{ item.src }}"
-    dest: "{{ item.dest }}"
+- name: Download genesis from URL
+  ansible.builtin.get_url:
+    url: "{{ supra.validator.genesis_url }}"
+    dest: "{{ validator_genesis_file_path }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
-  loop:
-    - { src: "{{ env }}/network/genesis.blob", dest: "{{ validator_genesis_file_path }}" }
-    - { src: "{{ env }}/network/supra_committees.json", dest: "{{ validator_supra_committees_file_path }}" }
+
+- name: Copy network committees files 
+  ansible.builtin.copy:
+    src: "testnet/network/supra_committees.json"
+    dest: "{{ validator_supra_committees_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  when: env == "testnet"
 
 - name: Copy validator public identity files
   ansible.builtin.copy:
