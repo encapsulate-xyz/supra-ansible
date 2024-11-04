@@ -1,6 +1,6 @@
 ---
 org: encapsulate
-domain_regex: "^([a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,}$"
+domain_regex: ^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$
 ansible_port: 8192
 
 default_node_types:

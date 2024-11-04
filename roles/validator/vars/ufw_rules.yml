@@ -1,3 +1,4 @@
+---
 validator_ufw_rules:
   - port: "{{ supra.validator.ports.p2p_port }}"
     proto: tcp

@@ -56,7 +56,6 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-
 - name: Copy supra certificate, ca and key
   ansible.builtin.copy:
     src: "{{ item.src }}"
