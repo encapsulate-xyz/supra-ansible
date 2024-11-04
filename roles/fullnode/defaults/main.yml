@@ -27,7 +27,12 @@ fullnode_directories:
   - "{{ fullnode_snapshot_dir }}"
 
 fullnode_config_file_path: "{{ fullnode_config_dir }}/{{ fullnode_config_file_name }}"
+
+fullnode_environment_general_file_path: "{{ fullnode_env_dir }}/{{ fullnode_environment_general_file_name }}"
+
 fullnode_ca_certificate_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_ca_certificate_file_name }}"
 fullnode_supra_certificate_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_certificate_file_name }}"
 fullnode_supra_key_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_key_file_name }}"
+
+fullnode_genesis_file_path: "{{ fullnode_config_dir }}/{{ fullnode_genesis_file_name }}"
 fullnode_supra_committees_file_path: "{{ fullnode_config_dir }}/{{ fullnode_supra_committees_file_name }}"

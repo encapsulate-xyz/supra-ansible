@@ -28,7 +28,7 @@ chain_instance.genesis_timestamp_microseconds = 1728518400000000
 # are set relative to SUPRA_HOME.
 
 # The port on which the node should listen for incoming RPC requests.
-bind_addr = "0.0.0.0:{{ vars[project][type].ports.p2p_port }}"
+bind_addr = "0.0.0.0:{{ supra.fullnode.ports.p2p_port }}"
 # If `true` then blocks will not be verified before execution. This value should be `false`
 # unless you also control the node from which this RPC node is receiving blocks.
 block_provider_is_trusted = false
@@ -39,7 +39,7 @@ consensus_client_private_key_path = "{{ fullnode_supra_key_file_path }}"
 # The path to the TLS root certificate authority certificate.
 consensus_root_ca_cert_path = "{{ fullnode_ca_certificate_file_path }}"
 # The websocket address of the attached validator.
-consensus_rpc = "ws://{{ fullnode_validator_ip_address.mainnet }}:29000"
+consensus_rpc = "ws://{{ fullnode_validator_ip_address.mainnet }}:{{ supra.validator.ports.p2p_port }}"
 # If true, all components will attempt to load their previous state from disk. Otherwise,
 # all components will start in their default state. Should always be `true` for testnet and
 # mainnet.
@@ -115,7 +115,7 @@ url = "https://rpc-suprascan-mainnet.supra.com"
 description = "RPC For suprascan"
 
 [[allowed_origin]]
-url = "http://localhost:27000"
+url = "http://localhost:{{ supra.fullnode.p2p_port }}"
 description = "LocalNet"
 mode = "Server"
 

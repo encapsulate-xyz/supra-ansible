@@ -1,10 +1,15 @@
 ---
+# Config file names
 fullnode_config_file_name: config.toml
+
+# Supra files names
 fullnode_ca_certificate_file_name: ca_certificate.pem
 fullnode_supra_certificate_file_name: supra_certificate.pem
 fullnode_supra_key_file_name: supra_key.pem
+
+# Network files names
 fullnode_supra_committees_file_name: supra_committees.json
-fullnode_genesis_blob_file_name: genesis.blob
-fullnode_validator_ip_address:
-  mainnet: 213.239.216.188
-  testnet: 176.9.8.81
+fullnode_genesis_file_name: genesis.blob
+
+# Environment file names
+fullnode_environment_general_file_name: "{{ service_identifier }}.env"

@@ -2,6 +2,7 @@
 supra:
   validator:
     version: v6.3.0
+    ip_address: 176.9.8.81
     ports:
       node_public_identity_port: 25000
       p2p_port: 26000
@@ -11,3 +12,4 @@ supra:
     ports:
       p2p_port: 27000
     snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
+    genesis_url: https://github.com/Entropy-Foundation/supra-nodeops-data/raw/refs/heads/master/scripts/genesis.blob

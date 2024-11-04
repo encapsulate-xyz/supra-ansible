@@ -1,0 +1,16 @@
+[Unit]
+Description=Supra fullnode
+
+[Service]
+User={{ service_identifier }}
+Group={{ service_identifier }}
+EnvironmentFile={{ fullnode_env_dir }}/{{ service_identifier }}.env
+WorkingDirectory={{ fullnode_config_dir }}
+ExecStart={{ fullnode_bin_dir }}/{{ service_identifier }}
+Restart=always
+RestartSec=4
+MemoryMax=64G
+LimitNOFILE=65536
+
+[Install]
+WantedBy=multi-user.target

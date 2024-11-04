@@ -1,9 +1,17 @@
 ---
+- name: Include the specific network's vars file
+  ansible.builtin.include_vars:
+    file: vars/ufw_rules.yml
+
 - name: Include user creation task for supra fullnode
   ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
   vars:
     home: "{{ fullnode_home_dir }}"
     directories: "{{ fullnode_directories }}"
+
+- name: Apply UFW rules for each node type
+  ansible.builtin.include_tasks: tasks/apply_ufw_rules.yml
+  loop: "{{ fullnode_ufw_rules }}"
 
 - name: Create Supra fullnode Docker container and copy binary
   vars:
@@ -34,7 +42,6 @@
         group: root
         mode: "0755"
       notify:
-        - Reload service
         - Restart service
 
   always:
@@ -51,25 +58,13 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Download and Copy Genesis Blob Based on Environment
-  block:
-    - name: Download genesis from URL
-      ansible.builtin.get_url:
-        url: https://mainnet-data.supra.com/configs/genesis.blob
-        dest: "{{ fullnode_config_dir }}"
-        owner: "{{ service_identifier }}"
-        group: "{{ service_identifier }}"
-        mode: "0644"
-      when: env == mainnet
-
-    - name: Copy genesis file
-      ansible.builtin.copy:
-        src: "{{ env }}/{{ fullnode_genesis_blob_file_name }}"
-        dest: "{{ fullnode_config_dir }}"
-        owner: "{{ service_identifier }}"
-        group: "{{ service_identifier }}"
-        mode: "0644"
-      when: env == testnet
+- name: Download genesis from URL
+  ansible.builtin.get_url:
+    url: "{{ supra.fullnode.genesis_url }}"
+    dest: "{{ fullnode_genesis_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
 
 - name: Copy Supra fullnode certificates, keys
   ansible.builtin.copy:
@@ -79,23 +74,22 @@
     group: "{{ service_identifier }}"
     mode: "0644"
   loop:
-    - { src: "{{ env }}/certs/{{ fullnode_ca_certificate_file_name }}", dest: "{{ fullnode_ca_certificate_file_path }}" }
-    - { src: "{{ env }}/certs/{{ fullnode_supra_certificate_file_name }}", dest: "{{ fullnode_supra_certificate_file_path }}" }
-    - { src: "{{ env }}/certs/{{ fullnode_supra_key_file_name }}", dest: "{{ fullnode_supra_key_file_path }}" }
-    - { src: "{{ env }}/{{ fullnode_supra_committees_file_name }}", dest: "{{ fullnode_config_dir }}" }
-    - { src: "{{ env }}/{{ fullnode_genesis_blob_file_name }}", dest: "{{ fullnode_config_dir }}" }
+    - { src: "{{ env }}/certs/ca_certificate.pem", dest: "{{ fullnode_ca_certificate_file_path }}" }
+    - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ fullnode_supra_certificate_file_path }}" }
+    - { src: "{{ env }}/certs/supra_key.pem }}", dest: "{{ fullnode_supra_key_file_path }}" }
+    - { src: "{{ env }}/supra_committees.json }}", dest: "{{ fullnode_supra_committees_file_path }}" }
 
 - name: Copy supra fullnode env file
   ansible.builtin.template:
-    src: "{{ env }}/normal_env_var"
-    dest: "{{ fullnode_env_dir }}/{{ service_identifier }}.env"
+    src: "{{ env }}/general.env.j2"
+    dest: "{{ fullnode_environment_general_file_path }}"
     owner: root
     group: root
     mode: "0644"
 
 - name: Copy supra-fullnode-node systemd service file
   ansible.builtin.template:
-    src: "{{ env }}/supra-fullnode.service.j2"
+    src: "{{ env }}/supra_fullnode.service.j2"
     dest: /etc/systemd/system/{{ service_identifier }}.service
     owner: root
     group: root
@@ -103,17 +97,3 @@
   notify:
     - Reload service
     - Restart service
-
-- name: Open supra fullnode node p2p port
-  community.general.ufw:
-    rule: allow
-    port: "{{ supra.fullnode.ports.p2p_port }}"
-    proto: tcp
-    comment: Open p2p port for supra fullnode
-
-- name: Open traffic to supra validator node p2p port
-  community.general.ufw:
-    rule: allow
-    port: "{{ supra.validator.ports.p2p_port }}"
-    proto: tcp
-    comment: Open p2p port for supra fullnode
