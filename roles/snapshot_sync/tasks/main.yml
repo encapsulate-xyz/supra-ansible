@@ -1,0 +1,60 @@
+---
+- name: Stop service
+  ansible.builtin.systemd:
+    name: "{{ service_identifier }}"
+    state: stopped
+
+- name: Clear data folder directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop: "{{ snapshot_sync_directories[type] }}"
+
+- name: Recreate empty data directories
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0755"
+  loop: "{{ snapshot_sync_directories[type] }}"
+
+- name: Write temporary rclone configuration for Cloudflare R2
+  ansible.builtin.copy:
+    dest: "{{ tmp_dir }}/rclone.conf"
+    mode: "0600"
+    content: "{{ snapshot_sync_rclone_config_content }}"
+
+- name: Sync snapshot
+  ansible.builtin.command: >
+    rclone sync cloudflare-r2:testnet-snapshot/snapshots/{{ item.src }}
+    {{ item.dest }}/ --progress
+  environment:
+    RCLONE_CONFIG: "{{ tmp_dir }}/rclone.conf"
+  async: 10000
+  poll: 20
+  loop: "{{ sync_paths[type] }}"
+  register: rclone_result
+  changed_when: rclone_result.stdout is defined and rclone_result.stdout != ""
+  notify:
+    - Restart service
+  vars:
+    sync_paths:
+      fullnode:
+        - { src: store, dest: "{{ snapshot_sync_store_dir }}" }
+        - { src: archive, dest: "{{ snapshot_sync_archive_dir }}" }
+      validator:
+        - { src: store, dest: "{{ snapshot_sync_smr_storage_dir }}" }
+
+- name: Set ownership of synced files
+  ansible.builtin.file:
+    path: "{{ item }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    recurse: yes
+  loop: "{{ snapshot_sync_directories[type] }}"
+
+- name: Clean up temporary rclone configuration
+  ansible.builtin.file:
+    path: "{{ tmp_dir }}/rclone.conf"
+    state: absent

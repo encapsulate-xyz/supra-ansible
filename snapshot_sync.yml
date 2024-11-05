@@ -1,12 +1,13 @@
 ---
-- name: Snapshot sync Supra fullnode
+- name: Snapshot sync Supra node
   hosts: all
   become: true
   gather_facts: true
   vars:
-    allowed_node_types: [fullnode]
+    allowed_node_types: [validator,fullnode]
   vars_files:
     - group_vars/all.yml
+    - group_vars/vault.yml
     - group_vars/{{ env }}.yml
 
   pre_tasks:
@@ -17,12 +18,12 @@
           ansible.builtin.include_tasks: tasks/setup_environment.yml
 
   tasks:
-    - name: Run fullnode snapshot sync role
+    - name: Run snapshot sync role
       when: type in allowed_node_types
       block:
         - name: Include common handlers
           ansible.builtin.include_role:
             name: common
-        - name: Include fullnode snapshot sync role
+        - name: Include snapshot sync role
           ansible.builtin.include_role:
-            name: fullnode_snapshot_sync
+            name: snapshot_sync
