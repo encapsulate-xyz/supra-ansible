@@ -76,8 +76,8 @@
   loop:
     - { src: "{{ env }}/certs/supra_ca.pem", dest: "{{ fullnode_supra_ca_file_path }}" }
     - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ fullnode_supra_certificate_file_path }}" }
-    - { src: "{{ env }}/certs/supra_key.pem }}", dest: "{{ fullnode_supra_key_file_path }}" }
-    - { src: "{{ env }}/network/supra_committees.json }}", dest: "{{ fullnode_supra_committees_file_path }}" }
+    - { src: "{{ env }}/certs/supra_key.pem", dest: "{{ fullnode_supra_key_file_path }}" }
+    - { src: "{{ env }}/network/supra_committees.json", dest: "{{ fullnode_supra_committees_file_path }}" }
 
 - name: Copy supra fullnode env file
   ansible.builtin.template:
