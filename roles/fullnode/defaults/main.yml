@@ -30,7 +30,7 @@ fullnode_config_file_path: "{{ fullnode_config_dir }}/{{ fullnode_config_file_na
 
 fullnode_environment_general_file_path: "{{ fullnode_env_dir }}/{{ fullnode_environment_general_file_name }}"
 
-fullnode_ca_certificate_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_ca_certificate_file_name }}"
+fullnode_supra_ca_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_ca_file_name }}"
 fullnode_supra_certificate_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_certificate_file_name }}"
 fullnode_supra_key_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_key_file_name }}"
 

@@ -37,7 +37,7 @@ consensus_client_cert_path = "{{ fullnode_supra_certificate_file_path }}"
 # The path to the private key to be used when negotiating TLS connections.
 consensus_client_private_key_path = "{{ fullnode_supra_key_file_path }}"
 # The path to the TLS root certificate authority certificate.
-consensus_root_ca_cert_path = "{{ fullnode_ca_certificate_file_path }}"
+consensus_root_ca_cert_path = "{{ fullnode_supra_ca_file_path }}"
 # The websocket address of the attached validator.
 consensus_rpc = "ws://{{ fullnode_validator_ip_address.mainnet }}:{{ supra.validator.ports.p2p_port }}"
 # If true, all components will attempt to load their previous state from disk. Otherwise,
