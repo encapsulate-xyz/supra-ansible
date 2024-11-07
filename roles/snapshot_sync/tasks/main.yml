@@ -51,7 +51,7 @@
     path: "{{ item }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
-    recurse: yes
+    recurse: true
   loop: "{{ snapshot_sync_directories[type] }}"
 
 - name: Clean up temporary rclone configuration
