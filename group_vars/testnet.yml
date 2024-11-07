@@ -6,11 +6,11 @@ supra:
     ports:
       node_public_identity_port: 25000
       p2p_port: 26000
-    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot.zip
+    snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
     genesis_url: https://github.com/Entropy-Foundation/supra-nodeops-data/raw/refs/heads/master/scripts/genesis.blob
   fullnode:
     version: v6.3.2
     ports:
       p2p_port: 27000
-    snapshot_url: https://testnet-snapshot.supra.com/snapshots/latest_snapshot_rpc.zip
+    snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
     genesis_url: https://github.com/Entropy-Foundation/supra-nodeops-data/raw/refs/heads/master/scripts/genesis.blob

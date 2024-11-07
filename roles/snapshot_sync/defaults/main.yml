@@ -8,6 +8,7 @@ snapshot_sync_store_dir: "{{ snapshot_sync_data_dir }}/rpc_store"
 snapshot_sync_ledger_dir: "{{ snapshot_sync_data_dir }}/rpc_ledger"
 
 snapshot_sync_smr_storage_dir: "{{ snapshot_sync_data_dir }}/smr_storage"
+snapshot_sync_ledger_storage_dir: "{{ snapshot_sync_data_dir }}/ledger_storage"
 
 snapshot_sync_directories:
   fullnode:
@@ -16,6 +17,7 @@ snapshot_sync_directories:
     - "{{ snapshot_sync_ledger_dir }}"
   validator:
     - "{{ snapshot_sync_smr_storage_dir }}"
+    - "{{ snapshot_sync_ledger_storage_dir }}"
 
 snapshot_sync_rclone_config_content: |
   [cloudflare-r2]

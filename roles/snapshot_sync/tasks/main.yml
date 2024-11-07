@@ -27,7 +27,7 @@
 
 - name: Sync snapshot
   ansible.builtin.command: >
-    rclone sync cloudflare-r2:testnet-snapshot/snapshots/{{ item.src }}
+    rclone sync {{ supra[type].snapshot_url }}/{{ item.src }}
     {{ item.dest }}/ --progress
   environment:
     RCLONE_CONFIG: "{{ tmp_dir }}/rclone.conf"
