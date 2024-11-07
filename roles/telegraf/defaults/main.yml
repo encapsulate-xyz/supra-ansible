@@ -1,0 +1,15 @@
+---
+telegraf_home_dir: /opt/{{ service_identifier }}
+
+telegraf_bin_dir: "{{ telegraf_home_dir }}/bin"
+telegraf_config_dir: "{{ telegraf_home_dir }}/config"
+telegraf_log_dir: "{{ telegraf_home_dir }}/log"
+
+telegraf_directories:
+  - "{{ telegraf_home_dir }}"
+  - "{{ telegraf_config_dir }}"
+  - "{{ telegraf_bin_dir }}"
+  - "{{ telegraf_log_dir }}"
+
+telegraf_config_file_path: "{{ telegraf_config_dir }}/{{ telegraf_config_file_name }}"
+telegraf_log_file_path: "{{ telegraf_log_dir }}/{{ service_identifier }}.log"

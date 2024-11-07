@@ -1,0 +1,4 @@
+---
+promtail_config_file_name: promtail.yml
+promtail_default_binary_name: promtail-{{ ansible_system | lower }}-{{ system_architecture }}
+promtail_position_file_name: positions.yml

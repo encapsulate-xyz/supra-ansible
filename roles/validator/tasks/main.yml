@@ -1,0 +1,137 @@
+---
+- name: Include the specific network's vars file
+  ansible.builtin.include_vars:
+    file: vars/ufw_rules.yml
+
+- name: Include user creation task for supra validator
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
+  vars:
+    home: "{{ validator_home_dir }}"
+    directories: "{{ validator_directories }}"
+
+- name: Apply UFW rules for each node type
+  ansible.builtin.include_tasks: tasks/apply_ufw_rules.yml
+  loop: "{{ validator_ufw_rules }}"
+
+- name: Create Supra Validator Docker container and copy binary
+  vars:
+    container_name: supra_validator
+  block:
+    - name: Create temporary Supra validator container for binary extraction
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ supra.validator.source_url }}:{{ supra.validator.version }}"
+        state: present
+        recreate: true
+
+    - name: Copy Supra validator binary
+      ansible.builtin.shell: >
+        docker cp {{ container_name }}:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
+      args:
+        executable: /bin/bash
+      register: copy_result
+      changed_when: copy_result.rc == 0
+      failed_when:
+        - copy_result.rc != 0
+        - "'No such container' in copy_result.stderr"
+
+    - name: Ensure Supra validator binary has the correct permissions
+      ansible.builtin.file:
+        path: "{{ validator_bin_dir }}/{{ service_identifier }}"
+        owner: root
+        group: root
+        mode: "0755"
+
+  always:
+    - name: Remove Supra validator container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+
+- name: Copy smr_settings.toml file
+  ansible.builtin.template:
+    src: "{{ env }}/smr_settings.toml.j2"
+    dest: "{{ validator_smr_settings_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Copy supra certificate, ca and key
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  loop:
+    - { src: "{{ env }}/certs/supra_key.pem", dest: "{{ validator_supra_key_file_path }}" }
+    - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ validator_supra_certificate_file_path }}" }
+    - { src: "{{ env }}/certs/supra_ca.pem", dest: "{{ validator_supra_ca_file_path }}" }
+
+- name: Download genesis from URL
+  ansible.builtin.get_url:
+    url: "{{ supra.validator.genesis_url }}"
+    dest: "{{ validator_genesis_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Copy network committees files
+  ansible.builtin.copy:
+    src: testnet/network/supra_committees.json
+    dest: "{{ validator_supra_committees_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  when: env == "testnet"
+
+- name: Copy validator public identity files
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  loop:
+    - { src: "{{ env }}/validator_public_identity.toml", dest: "{{ validator_public_identity_file_path }}" }
+    - { src: "{{ env }}/smr_public_key.json", dest: "{{ validator_smr_public_key_path }}" }
+
+- name: Copy supra validator systemd environment files
+  ansible.builtin.template:
+    src: "{{ env }}/general.env.j2"
+    dest: "{{ validator_environment_general_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Fetch secrets environment file from HCP Vault and save to file
+  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+  vars:
+    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_environment_secrets_file_name }}"
+    secret_destination_path: "{{ validator_environment_secrets_file_path }}"
+    secret_type: environment
+
+- name: Fetch smr_secret_key.pem
+  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+  vars:
+    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_smr_secret_key_name }}"
+    secret_destination_path: "{{ validator_smr_secret_key_path }}"
+    secret_type: base64
+
+- name: Fetch validator_identity.pem
+  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+  vars:
+    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_identity_file_name }}"
+    secret_destination_path: "{{ validator_identity_file_path }}"
+    secret_type: base64
+
+- name: Copy supra-validator-node systemd service file
+  ansible.builtin.template:
+    src: "{{ env }}/supra.service.j2"
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service

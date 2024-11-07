@@ -1,0 +1,36 @@
+---
+- name: Include user creation task for supra rpc
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
+  vars:
+    home: "{{ telegraf_home_dir }}"
+    directories: "{{ telegraf_directories }}"
+    log_file_path: "{{ telegraf_log_file_path }}"
+
+- name: Include Download, Unarchive and Copy Binary task
+  ansible.builtin.include_tasks: tasks/extract_binary.yml
+  vars:
+    source_url: "{{ telegraf.source_url }}"
+    suffix_url: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}_{{ ansible_system | lower }}_{{ system_architecture }}.{{ telegraf.file_extension }}"
+    extracted_binary_path: "{{ telegraf_default_binary_name }}-{{ telegraf.version }}/usr/bin/{{ telegraf_default_binary_name }}"
+    binary_dest_path: "{{ telegraf_bin_dir }}/{{ service_identifier }}"
+
+- name: Copy telegraf config
+  ansible.builtin.template:
+    src: telegraf.conf.j2
+    dest: "{{ telegraf_config_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  notify:
+    - Restart service
+
+- name: Copy telegraf service file
+  ansible.builtin.template:
+    src: telegraf.service.j2
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service

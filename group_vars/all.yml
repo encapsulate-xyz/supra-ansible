@@ -1,0 +1,30 @@
+---
+org: encapsulate
+domain_regex: ^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$
+ansible_port: 8192
+
+default_node_types:
+  - validator
+  - default
+
+tmp_dir: /tmp
+
+supra:
+  fullnode:
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/rpc-node
+  validator:
+    source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
+
+promtail:
+  service_identifier_suffix: promtail
+  source_url: https://github.com/grafana/loki/releases/download
+  file_extension: zip
+  ports:
+    http_listen_port:
+      validator: 9081
+      fullnode: 9082
+
+telegraf:
+  service_identifier_suffix: telegraf
+  source_url: https://dl.influxdata.com/telegraf/releases
+  file_extension: tar.gz

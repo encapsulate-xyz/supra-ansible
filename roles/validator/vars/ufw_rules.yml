@@ -1,0 +1,13 @@
+---
+validator_ufw_rules:
+  - port: "{{ supra.validator.ports.p2p_port }}"
+    proto: tcp
+    rule: allow
+    from: any
+    comment: p2p_port
+
+  - port: "{{ supra.validator.ports.node_public_identity_port }}"
+    proto: tcp
+    rule: allow
+    from: any
+    comment: node_public_identity_port

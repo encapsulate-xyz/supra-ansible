@@ -1,0 +1,11 @@
+---
+all:
+  vars:
+    env: mainnet
+  children:
+    supra:
+      hosts:
+        validator.supra.mainnet.encapsulate.xyz:
+          type: validator
+        fullnode.supra.mainnet.encapsulate.xyz:
+          type: fullnode

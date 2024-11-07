@@ -1,0 +1,99 @@
+---
+- name: Include the specific network's vars file
+  ansible.builtin.include_vars:
+    file: vars/ufw_rules.yml
+
+- name: Include user creation task for supra fullnode
+  ansible.builtin.include_tasks: tasks/create_user_and_directories.yml
+  vars:
+    home: "{{ fullnode_home_dir }}"
+    directories: "{{ fullnode_directories }}"
+
+- name: Apply UFW rules for each node type
+  ansible.builtin.include_tasks: tasks/apply_ufw_rules.yml
+  loop: "{{ fullnode_ufw_rules }}"
+
+- name: Create Supra fullnode Docker container and copy binary
+  vars:
+    container_name: supra_fullnode
+  block:
+    - name: Create temporary Supra fullnode container for binary extraction
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ supra.fullnode.source_url }}:{{ supra.fullnode.version }}"
+        state: present
+        recreate: true
+
+    - name: Copy Supra fullnode binary
+      ansible.builtin.shell: >
+        docker cp {{ container_name }}:/supra/rpc_node {{ fullnode_bin_dir }}/{{ service_identifier }}
+      args:
+        executable: /bin/bash
+      register: copy_result
+      changed_when: copy_result.rc == 0
+      failed_when:
+        - copy_result.rc != 0
+        - "'No such container' in copy_result.stderr"
+
+    - name: Ensure Supra fullnode binary has the correct permissions
+      ansible.builtin.file:
+        path: "{{ fullnode_bin_dir }}/{{ service_identifier }}"
+        owner: root
+        group: root
+        mode: "0755"
+      notify:
+        - Restart service
+
+  always:
+    - name: Remove Supra fullnode container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
+
+- name: Copy config.toml file
+  ansible.builtin.template:
+    src: "{{ env }}/config.toml.j2"
+    dest: "{{ fullnode_config_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Download genesis from URL
+  ansible.builtin.get_url:
+    url: "{{ supra.fullnode.genesis_url }}"
+    dest: "{{ fullnode_genesis_file_path }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+
+- name: Copy Supra fullnode certificates, keys
+  ansible.builtin.copy:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+    mode: "0644"
+  loop:
+    - { src: "{{ env }}/certs/supra_ca.pem", dest: "{{ fullnode_supra_ca_file_path }}" }
+    - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ fullnode_supra_certificate_file_path }}" }
+    - { src: "{{ env }}/certs/supra_key.pem }}", dest: "{{ fullnode_supra_key_file_path }}" }
+    - { src: "{{ env }}/network/supra_committees.json }}", dest: "{{ fullnode_supra_committees_file_path }}" }
+
+- name: Copy supra fullnode env file
+  ansible.builtin.template:
+    src: "{{ env }}/general.env.j2"
+    dest: "{{ fullnode_environment_general_file_path }}"
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy supra-fullnode-node systemd service file
+  ansible.builtin.template:
+    src: "{{ env }}/supra_fullnode.service.j2"
+    dest: /etc/systemd/system/{{ service_identifier }}.service
+    owner: root
+    group: root
+    mode: "0644"
+  notify:
+    - Reload service
+    - Restart service

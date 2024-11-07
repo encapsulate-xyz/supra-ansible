@@ -1,0 +1,25 @@
+---
+- name: Install Dependencies
+  ansible.builtin.apt:
+    name: "{{ item }}"
+    state: present
+    update_cache: true
+  loop:
+    - coreutils
+    - openssl
+    - expect
+    - python3-pip
+    - ca-certificates
+    - curl
+    - gnupg
+    - apt-transport-https
+    - software-properties-common
+    - python3-toml
+    - unzip
+    - rclone
+
+- name: Install Gcloud
+  ansible.builtin.import_tasks: install_gcloud.yml
+
+- name: Install Docker
+  ansible.builtin.import_tasks: install_docker.yml

@@ -1,0 +1,17 @@
+---
+- name: Add gcloud repo
+  ansible.builtin.deb822_repository:
+    name: gcloud
+    types: deb
+    uris: https://packages.cloud.google.com/apt
+    suites: cloud-sdk
+    components: main
+    signed_by: https://packages.cloud.google.com/apt/doc/apt-key.gpg
+    state: present
+    enabled: true
+
+- name: Install gcloud-cli
+  ansible.builtin.apt:
+    name: google-cloud-cli
+    state: present
+    update_cache: true

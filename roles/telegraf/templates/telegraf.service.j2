@@ -1,0 +1,16 @@
+[Unit]
+Description=Telegraf
+
+[Service]
+User={{ service_identifier }}
+Group={{ service_identifier }}
+Type=notify
+ExecStart={{ telegraf_bin_dir }}/{{ service_identifier }} -config {{ telegraf_config_file_path }}
+Restart=always
+RestartSec=4
+LimitNOFILE=65536
+StandardOutput=append:{{ telegraf_log_file_path }}
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target

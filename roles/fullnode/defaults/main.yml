@@ -1,0 +1,38 @@
+---
+fullnode_home_dir: /opt/{{ service_identifier }}
+
+fullnode_bin_dir: "{{ fullnode_home_dir }}/bin"
+fullnode_data_dir: "{{ fullnode_home_dir }}/data"
+fullnode_log_dir: "{{ fullnode_home_dir }}/log"
+fullnode_config_dir: "{{ fullnode_home_dir }}/config"
+fullnode_certs_dir: "{{ fullnode_home_dir }}/certs"
+fullnode_env_dir: "{{ fullnode_home_dir }}/environment"
+
+fullnode_archive_dir: "{{ fullnode_data_dir }}/rpc_archive"
+fullnode_store_dir: "{{ fullnode_data_dir }}/rpc_store"
+fullnode_ledger_dir: "{{ fullnode_data_dir }}/rpc_ledger"
+fullnode_snapshot_dir: "{{ fullnode_data_dir }}/snapshot"
+
+fullnode_directories:
+  - "{{ fullnode_home_dir }}"
+  - "{{ fullnode_bin_dir }}"
+  - "{{ fullnode_data_dir }}"
+  - "{{ fullnode_log_dir }}"
+  - "{{ fullnode_config_dir }}"
+  - "{{ fullnode_certs_dir }}"
+  - "{{ fullnode_env_dir }}"
+  - "{{ fullnode_archive_dir }}"
+  - "{{ fullnode_store_dir }}"
+  - "{{ fullnode_ledger_dir }}"
+  - "{{ fullnode_snapshot_dir }}"
+
+fullnode_config_file_path: "{{ fullnode_config_dir }}/{{ fullnode_config_file_name }}"
+
+fullnode_environment_general_file_path: "{{ fullnode_env_dir }}/{{ fullnode_environment_general_file_name }}"
+
+fullnode_supra_ca_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_ca_file_name }}"
+fullnode_supra_certificate_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_certificate_file_name }}"
+fullnode_supra_key_file_path: "{{ fullnode_certs_dir }}/{{ fullnode_supra_key_file_name }}"
+
+fullnode_genesis_file_path: "{{ fullnode_config_dir }}/{{ fullnode_genesis_file_name }}"
+fullnode_supra_committees_file_path: "{{ fullnode_config_dir }}/{{ fullnode_supra_committees_file_name }}"

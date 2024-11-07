@@ -1,0 +1,7 @@
+---
+fullnode_ufw_rules:
+  - port: "{{ supra.fullnode.ports.p2p_port }}"
+    proto: tcp
+    rule: allow
+    from: any
+    comment: p2p_port

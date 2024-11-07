@@ -1,0 +1,18 @@
+[Unit]
+Description=Promtail service for supra
+After=network.target
+
+[Service]
+Type=simple
+User={{ service_identifier }}
+Group={{ service_identifier }}
+WorkingDirectory={{ promtail_home_dir }}
+ExecStart={{ promtail_bin_dir }}/{{ service_identifier }} -config.file {{ promtail_config_file_path }}
+Restart=always
+RestartSec=4
+LimitNOFILE=65536
+StandardOutput=append:{{ promtail_log_file_path }}
+StandardError=inherit
+
+[Install]
+WantedBy=multi-user.target
