@@ -22,7 +22,7 @@
 
   tasks:
     - name: Set service_identifier
-      set_fact:
+      ansible.builtin.set_fact:
         service_identifier: "{{ node_service_identifier }}-{{ telegraf.service_identifier_suffix }}"
 
     - name: Include common handlers

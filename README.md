@@ -35,7 +35,7 @@ Clone this repository to your Ansible control node:
 
 ```bash
 git clone https://github.com/encapsulate-xyz/supra-ansible.git
-cd Supra-ansible
+cd supra-ansible
 ```
 
 ### 3. Inventory
@@ -52,9 +52,9 @@ all:
   children:
     Supra:
       hosts:
-        validator.Supra.testnet.encapsulate.xyz:
+        validator.supra.testnet.encapsulate.xyz:
           type: validator
-        fullnode.Supra.testnet.encapsulate.xyz:
+        fullnode.supra.testnet.encapsulate.xyz:
           type: fullnode
 ```
 
