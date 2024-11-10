@@ -5,7 +5,6 @@
   gather_facts: true
   vars:
     node_service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
-    # because this promtail is being used for pushing to loki.services.supra.com, its service_identifier includes the node_service_identifier
     system_architecture: >-
       {%- if ansible_architecture == 'x86_64' -%}
         amd64
@@ -23,6 +22,7 @@
   tasks:
     - name: Set service_identifier
       ansible.builtin.set_fact:
+        # because this promtail is being used for pushing to loki.services.supra.com, its service_identifier includes the node_service_identifier
         service_identifier: "{{ node_service_identifier }}-{{ promtail.service_identifier_suffix }}"
 
     - name: Include common handlers
