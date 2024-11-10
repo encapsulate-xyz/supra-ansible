@@ -1,0 +1,17 @@
+---
+- name: Import setup_fullnode playbook
+  ansible.builtin.import_playbook: setup_fullnode.yml
+  when: type == "fullnode"
+
+- name: Import setup_validator playbook
+  ansible.builtin.import_playbook: setup_validator.yml
+  when: type == "validator"
+
+- name: Import setup_promtail playbook
+  ansible.builtin.import_playbook: setup_promtail.yml
+
+- name: Import setup_telegraf playbook
+  ansible.builtin.import_playbook: setup_telegraf.yml
+
+- name: Import snapshot_sync playbook
+  ansible.builtin.import_playbook: snapshot_sync.yml
