@@ -1,7 +1,7 @@
 ---
 supra:
   validator:
-    version: v6.3.0
+    version: v6.3.10
     ip_address: 176.9.8.81
     ports:
       node_public_identity_port: 25000
@@ -9,7 +9,7 @@ supra:
     snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
     genesis_url: https://github.com/Entropy-Foundation/supra-nodeops-data/raw/refs/heads/master/scripts/genesis.blob
   fullnode:
-    version: v6.3.2
+    version: v6.3.10
     ports:
       p2p_port: 27000
     snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
