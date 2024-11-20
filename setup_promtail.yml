@@ -5,14 +5,7 @@
   gather_facts: true
   vars:
     node_service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
-    system_architecture: >-
-      {%- if ansible_architecture == 'x86_64' -%}
-        amd64
-      {%- elif ansible_architecture == 'aarch64' -%}
-        arm64
-      {%- else -%}
-        {{ ansible_architecture }}
-      {%- endif -%}
+    system_architecture: "{{ architecture_map[ansible_architecture] | default(ansible_architecture) }}"
   vars_files:
     - group_vars/all.yml
     - group_vars/default.yml
