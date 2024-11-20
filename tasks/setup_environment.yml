@@ -4,6 +4,10 @@
     project: "{{ group_names[0] }}"
     service_identifier: "{{ group_names[0] }}{{ '' if type in default_node_types else '-' + type }}"
 
+- name: Set architecture variable based on system architecture
+  ansible.builtin.set_fact:
+    system_architecture: "{{ architecture_map[ansible_architecture] | default(ansible_architecture) }}"
+
 - name: Display environment being deployed to
   ansible.builtin.debug:
     msg:
@@ -15,21 +19,12 @@
       - "Version: {{ vars[project][type].version }}"
       - "Username: {{ service_identifier }}"
       - "Service Name: {{ service_identifier }}"
-
-- name: Set architecture variable based on system architecture
-  ansible.builtin.set_fact:
-    system_architecture: >-
-      {%- if ansible_architecture == 'x86_64' -%}
-        amd64
-      {%- elif ansible_architecture == 'aarch64' -%}
-        arm64
-      {%- else -%}
-        {{ ansible_architecture }}
-      {%- endif -%}
+      - "Operating System: {{ ansible_system | lower }}"
+      - "System Architecture: {{ system_architecture }}"
 
 - name: Confirm deployment details
   ansible.builtin.pause:
-    seconds: 20
+    seconds: 40
 
 - name: Please confirm again
   ansible.builtin.debug:
