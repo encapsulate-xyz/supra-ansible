@@ -2,24 +2,28 @@
 
 # The below parameters are fixed for the protocol and must be agreed upon by all node operators
 # at genesis. They may subsequently be updated via governance decisions. Paths are set relative
-# to SUPRA_HOME.
+# to $SUPRA_HOME.
 
 # Core protocol parameters.
 
 # A unique identifier for this instance of the Supra protocol. Prevents replay attacks across chains.
-chain_instance.chain_id = 7
+chain_instance.chain_id = 8
 # The length of an epoch in seconds.
 chain_instance.epoch_duration_secs = 7200
 # The number of seconds that stake locked in a Stake Pool will automatically be locked up for when
 # its current lockup expires, if no request is made to unlock it.
-chain_instance.recurring_lockup_duration_secs = 14400
+#
+# 48 hours.
+chain_instance.recurring_lockup_duration_secs = 172800
 # The number of seconds allocated for voting on governance proposals. Governance will initially be 
 # controlled by The Supra Foundation.
-chain_instance.voting_duration_secs = 7200
+#
+# 46 hours.
+chain_instance.voting_duration_secs = 165600
 # Determines whether the network will start with a faucet, amongst other things.
 chain_instance.is_testnet = false
-# Thursday, Oct 10, 2024 12:00:00.000 AM (UTC)
-chain_instance.genesis_timestamp_microseconds = 1728518400000000
+# Wednesday, Nov 20, 2024 12:00:00.000 AM (UTC).
+chain_instance.genesis_timestamp_microseconds = 1732060800000000
 
 
 ######################################### NODE PARAMETERS #########################################
@@ -29,9 +33,9 @@ chain_instance.genesis_timestamp_microseconds = 1728518400000000
 
 # The port on which the node should listen for incoming RPC requests.
 bind_addr = "0.0.0.0:{{ supra.fullnode.ports.p2p_port }}"
-# If `true` then blocks will not be verified before execution. This value should be `false`
+# If true then blocks will not be verified before execution. This value should be false
 # unless you also control the node from which this RPC node is receiving blocks.
-block_provider_is_trusted = false
+block_provider_is_trusted = true
 # The path to the TLS certificate for the connection with the attached validator.
 consensus_client_cert_path = "{{ fullnode_supra_certificate_file_path }}"
 # The path to the private key to be used when negotiating TLS connections.
@@ -41,13 +45,13 @@ consensus_root_ca_cert_path = "{{ fullnode_supra_ca_file_path }}"
 # The websocket address of the attached validator.
 consensus_rpc = "ws://{{ supra.validator.ip_address }}:{{ supra.validator.ports.p2p_port }}"
 # If true, all components will attempt to load their previous state from disk. Otherwise,
-# all components will start in their default state. Should always be `true` for testnet and
+# all components will start in their default state. Should always be true for testnet and
 # mainnet.
 resume = true
 # The path to supra_committees.json.
 supra_committees_config = "{{ fullnode_supra_committees_file_path }}"
 # The number of seconds to wait before retrying a block sync request.
-sync_retry_interval_in_secs = 5
+sync_retry_interval_in_secs = 1
 
 # Parameters for the RPC Archive database. This database stores the indexes used to serve RPC API calls.
 [database_setup.dbs.archive.rocks_db]
@@ -73,7 +77,7 @@ enable_snapshots = true
 # The number of snapshots to retain, including the latest.
 depth = 2
 # The interval between snapshots in seconds.
-interval_in_seconds = 3600
+interval_in_seconds = 1800
 # The path at which the snapshots should be stored.
 path = "{{ fullnode_snapshot_dir }}"
 # The number of times to retry a snapshot in the event that it fails unexpectedly.
