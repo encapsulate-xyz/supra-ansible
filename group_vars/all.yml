@@ -3,6 +3,10 @@ org: encapsulate
 domain_regex: ^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$
 ansible_port: 8192
 
+architecture_map:
+  x86_64: amd64
+  aarch64: arm64
+
 default_node_types:
   - validator
   - default
@@ -22,7 +26,10 @@ promtail:
   ports:
     http_listen_port:
       validator: 9082
-      fullnode: 9083
+      fullnode: 9084
+    grpc_listen_port:
+      validator: 9083
+      fullnode: 9085
 
 telegraf:
   service_identifier_suffix: telegraf

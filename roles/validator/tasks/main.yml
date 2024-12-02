@@ -103,26 +103,29 @@
     group: "{{ service_identifier }}"
     mode: "0644"
 
-- name: Fetch secrets environment file from HCP Vault and save to file
-  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
-  vars:
-    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_environment_secrets_file_name }}"
-    secret_destination_path: "{{ validator_environment_secrets_file_path }}"
-    secret_type: environment
+- name: Fetch secrets from HCP Vault
+  when: fetch_validator_keys | default(false) | bool
+  block:
+    - name: Fetch secrets environment file from HCP Vault and save to file
+      ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+      vars:
+        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_environment_secrets_file_name }}"
+        secret_destination_path: "{{ validator_environment_secrets_file_path }}"
+        secret_type: environment
 
-- name: Fetch smr_secret_key.pem
-  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
-  vars:
-    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_smr_secret_key_name }}"
-    secret_destination_path: "{{ validator_smr_secret_key_path }}"
-    secret_type: base64
+    - name: Fetch smr_secret_key.pem
+      ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+      vars:
+        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_smr_secret_key_name }}"
+        secret_destination_path: "{{ validator_smr_secret_key_path }}"
+        secret_type: base64
 
-- name: Fetch validator_identity.pem
-  ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
-  vars:
-    vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_identity_file_name }}"
-    secret_destination_path: "{{ validator_identity_file_path }}"
-    secret_type: base64
+    - name: Fetch validator_identity.pem
+      ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+      vars:
+        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_identity_file_name }}"
+        secret_destination_path: "{{ validator_identity_file_path }}"
+        secret_type: base64
 
 - name: Copy supra-validator-node systemd service file
   ansible.builtin.template:
