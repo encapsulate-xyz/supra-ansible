@@ -21,8 +21,8 @@ promtail:
   file_extension: zip
   ports:
     http_listen_port:
-      validator: 9081
-      fullnode: 9082
+      validator: 9082
+      fullnode: 9083
 
 telegraf:
   service_identifier_suffix: telegraf
