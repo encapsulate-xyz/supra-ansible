@@ -1,5 +1,5 @@
 ---
-- name: Create a directory with specific permissions and ownership
+- name: Create a temporary directory
   ansible.builtin.file:
     path: "{{ tmp_dir }}/{{ service_identifier }}"
     state: directory
@@ -25,6 +25,8 @@
     group: root
     force: true
     mode: "0755"
+  notify:
+    - Restart service
 
 - name: Clean up the temporary files in /tmp
   ansible.builtin.file:
