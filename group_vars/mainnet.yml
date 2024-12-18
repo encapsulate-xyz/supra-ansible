@@ -9,7 +9,7 @@ supra:
     snapshot_url: cloudflare-r2:mainnet/snapshots/store
     genesis_url: https://mainnet-data.supra.com/configs/genesis.blob
   fullnode:
-    version: v7.1.7
+    version: v7.1.8
     ports:
       p2p_port: 30000
     snapshot_url: cloudflare-r2:mainnet/snapshots/store
