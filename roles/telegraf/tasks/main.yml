@@ -16,7 +16,7 @@
 
 - name: Copy telegraf config
   ansible.builtin.template:
-    src: telegraf.conf.j2
+    src: "{{ type }}/telegraf.conf.j2"
     dest: "{{ telegraf_config_file_path }}"
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
