@@ -1,6 +1,6 @@
 ---
 promtail:
-  version: 3.3.0
+  version: 3.3.2
 
 telegraf:
-  version: 1.32.1
+  version: 1.33.1
