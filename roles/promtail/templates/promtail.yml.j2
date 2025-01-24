@@ -6,7 +6,9 @@ positions:
   filename: {{ promtail_position_file_path }}
 
 clients:
-  - url: https://loki.services.supra.com/loki/api/v1/push
+  - url: https://loki.services.supra.com/loki/api/v1/push 
+    batchsize: 10000
+    batchwait: 60s
 
 scrape_configs:
   - job_name: smr

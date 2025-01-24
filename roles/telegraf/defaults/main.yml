@@ -13,3 +13,5 @@ telegraf_directories:
 
 telegraf_config_file_path: "{{ telegraf_config_dir }}/{{ telegraf_config_file_name }}"
 telegraf_log_file_path: "{{ telegraf_log_dir }}/{{ service_identifier }}.log"
+
+telegraf_supra_log_file_path: "/opt/{{ node_service_identifier }}"
