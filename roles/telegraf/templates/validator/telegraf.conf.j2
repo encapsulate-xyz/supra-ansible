@@ -84,7 +84,7 @@
 [[inputs.net]]
 
 [[inputs.exec]]
-  commands = ["/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/check_vals_rpc_ports.sh | bash -s {{ supra.validator.ports.node_public_identity_port }}'"]
+  commands = ["/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/check_vals_rpc_ports.sh | bash -s {{ supra.validator.ports.node_public_identity_port }}'"]
   timeout = "5s"
   data_format = "influx"
 
@@ -96,7 +96,7 @@
   name_override = "supra_version"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/total_transaction_vals.sh | bash -s {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/total_transaction_vals.sh | bash -s {{ telegraf_supra_log_file_path }}'"
   timeout = "600s"
   data_format = "influx"
  # data_type = "string"
@@ -104,14 +104,14 @@
   interval = "300s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/epoch-vals.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/epoch-vals.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "600s"
   data_format = "influx"
   name_override = "epoch_metrics" 
   interval = "300s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/vals_participate.sh | bash -s {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/vals_participate.sh | bash -s {{ telegraf_supra_log_file_path }}'"
   timeout = "600s"
   data_format = "value"
   data_type ="string"
@@ -119,13 +119,13 @@
   interval = "300s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://gist.githubusercontent.com/https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/block_rate.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://gist.githubusercontent.com/https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/block_rate.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "15s"
   data_format = "influx"
   name_override = "block_rate"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/vals_count.sh | bash -s {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/vals_count.sh | bash -s {{ telegraf_supra_log_file_path }}'"
   timeout = "600s"
   data_format = "value"
   data_type = "integer"
@@ -133,7 +133,7 @@
   interval = "300s"
   
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/sync.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/sync.py | python3 - {{ telegraf_supra_log_file_path }}'"
   data_format = "influx"
   name_override = "sync_status"
   interval = "300s"
@@ -145,31 +145,31 @@
   name_override = "node_geolocation"      
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/blocks.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/blocks.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "15s"
   data_format = "influx"
   name_override = "block_values"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/txn-metrics.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/txn-metrics.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "15s"
   data_format = "influx"
   name_override = "metrics_txn"
   
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/master_dash_val.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/master_dash_val.py | python3 - {{ telegraf_supra_log_file_path }}'"
   data_format = "influx"
   name_override = "validator_metrics"
   # interval = "300s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/consensus_latency.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/consensus_latency.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "30s"
   data_format = "influx"
   name_override = "consensus_latency"
   
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/kowshikvajrala/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/mainnet_validator.py | python3 - {{ telegraf_supra_log_file_path.validator }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/mainnet_validator.py | python3 - {{ telegraf_supra_log_file_path }}'"
   data_format = "influx"
   name_override = "mainnet_validator"
   # interval = "300s"
@@ -184,7 +184,7 @@
   urls = ["http://34.100.248.227:8086"]
 
   ## Token for authentication.
-  token = "P7jDj8aK40pnSqfyX4m4OZy878PK1wd6B_ZPhRjeIeY6mqA-XVRZinqjFh2GdE6sS5O_jK92Cj5P9IZ0v-qBNw=="
+  token = "{{ vault.supra.external.telegraf_token }}"
   timeout = "15s"
   ## Organization is the name of the organization you wish to write to; must exist.
   organization = "Entropy Foundation"
