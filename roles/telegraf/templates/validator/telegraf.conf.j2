@@ -119,7 +119,7 @@
   interval = "300s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://gist.githubusercontent.com/https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/block_rate.py | python3 - {{ telegraf_supra_log_file_path }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/block_rate.py | python3 - {{ telegraf_supra_log_file_path }}'"
   timeout = "15s"
   data_format = "influx"
   name_override = "block_rate"
@@ -188,6 +188,18 @@
   timeout = "15s"
   ## Organization is the name of the organization you wish to write to; must exist.
   organization = "Entropy Foundation"
+
+  ## Destination bucket to write into.
+  bucket = "supra-metrics"
+
+[[outputs.influxdb_v2]]
+  urls = ["http://{{ monitor_server_dns }}:8086"]
+
+  ## Token for authentication.
+  token = "{{ vault.supra.internal.telegraf_token }}"
+  timeout = "15s"
+  ## Organization is the name of the organization you wish to write to; must exist.
+  organization = "{{ org }}"
 
   ## Destination bucket to write into.
   bucket = "supra-metrics"
