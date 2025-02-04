@@ -5,6 +5,11 @@
   collection_jitter = "5s"
   debug = true  
 
+[global_tags]
+  type = "{{ type }}"
+  env = "{{ env }}"
+  project = "{{ project }}"
+
 # Read metrics about cpu usage
 [[inputs.cpu]]
   ## Whether to report per-cpu stats or not
