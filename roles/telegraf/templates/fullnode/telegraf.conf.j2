@@ -5,6 +5,11 @@
   collection_jitter = "5s"
   debug = true  
 
+[global_tags]
+  type = "{{ type }}"
+  env = "{{ env }}"
+  project = "{{ project }}"
+
 # Read metrics about cpu usage
 [[inputs.cpu]]
   ## Whether to report per-cpu stats or not
@@ -188,3 +193,15 @@
 
   ## Destination bucket to write into.
   bucket = "supra-metrics" 
+
+[[outputs.influxdb_v2]]
+  urls = ["http://{{ monitor_server_dns }}:8086"]
+
+  ## Token for authentication.
+  token = "{{ vault.supra.internal.telegraf_token }}"
+  timeout = "15s"
+  ## Organization is the name of the organization you wish to write to; must exist.
+  organization = "{{ org }}"
+
+  ## Destination bucket to write into.
+  bucket = "supra-metrics"
