@@ -16,8 +16,5 @@
     - unzip
     - rclone
 
-- name: Install Gcloud
-  ansible.builtin.import_tasks: install_gcloud.yml
-
 - name: Install Docker
   ansible.builtin.import_tasks: install_docker.yml
