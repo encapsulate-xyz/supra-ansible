@@ -178,7 +178,7 @@
   timeout = "60s"
 
 [[inputs.exec]]
-  "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/encapsulate_metrics_script.py | python3 - {{ type }} {{ env }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/encapsulate_metrics_script.py | python3 - {{ type }} {{ env }}'"
   data_format = "prometheus"
   timeout = "60s"
 
