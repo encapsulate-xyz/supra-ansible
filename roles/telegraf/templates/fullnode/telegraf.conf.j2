@@ -177,6 +177,11 @@
   # interval = "300s"
   timeout = "60s"
 
+[[inputs.exec]]
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/encapsulate_{{ env }}_fullnode_metrics.py | python3 - {{ telegraf_supra_log_file_path }}'"
+  data_format = "prometheus"
+  timeout = "60s"
+
 [[outputs.influxdb_v2]]
   ## The URLs of the InfluxDB cluster nodes.
   ##
@@ -196,3 +201,4 @@
 
 [[outputs.influxdb]]
   urls = ["http://{{ monitor_server_dns }}:9122"]
+  namepass = ["prometheus"]
