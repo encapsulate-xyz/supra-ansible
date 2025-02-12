@@ -175,7 +175,7 @@
   timeout = "60s"
 
 [[inputs.exec]]
-  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/encapsulate_{{ env }}_validator_metrics.py | python3 - {{ telegraf_supra_log_file_path }}'"
+  command = "/bin/bash -c 'curl -s https://raw.githubusercontent.com/encapsulate-xyz/supra-node-monitoring-tool/refs/heads/master/metrics-scripts/encapsulate_metrics_script.py | python3 - {{ type }} {{ env }}'"
   data_format = "prometheus"
   timeout = "60s"
 
