@@ -17,7 +17,7 @@ validator_public_identity_file_name: validator_public_identity.toml
 
 # Key files names
 validator_smr_secret_key_name: smr_secret_key.pem
-validator_identity_file_name: validator_identity.pem
+validator_identity_file_name: node_identity.pem
 
 # Environment file names
 validator_environment_secrets_file_name: "{{ service_identifier }}.secrets.env"
