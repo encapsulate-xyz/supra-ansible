@@ -34,6 +34,8 @@
       failed_when:
         - copy_result.rc != 0
         - "'No such container' in copy_result.stderr"
+      notify:
+        - Restart service
 
     - name: Ensure Supra fullnode binary has the correct permissions
       ansible.builtin.file:
@@ -57,6 +59,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Download genesis from URL
   ansible.builtin.get_url:
@@ -65,6 +69,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Copy Supra fullnode certificates, keys
   ansible.builtin.copy:
@@ -78,6 +84,8 @@
     - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ fullnode_supra_certificate_file_path }}" }
     - { src: "{{ env }}/certs/supra_key.pem", dest: "{{ fullnode_supra_key_file_path }}" }
     - { src: "{{ env }}/network/supra_committees.json", dest: "{{ fullnode_supra_committees_file_path }}" }
+  notify:
+    - Restart service
 
 - name: Copy supra fullnode env file
   ansible.builtin.template:
@@ -86,6 +94,8 @@
     owner: root
     group: root
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Copy supra-fullnode-node systemd service file
   ansible.builtin.template:

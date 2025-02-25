@@ -34,6 +34,8 @@
       failed_when:
         - copy_result.rc != 0
         - "'No such container' in copy_result.stderr"
+      notify:
+        - Restart service
 
     - name: Ensure Supra validator binary has the correct permissions
       ansible.builtin.file:
@@ -41,6 +43,8 @@
         owner: root
         group: root
         mode: "0755"
+      notify:
+        - Restart service
 
   always:
     - name: Remove Supra validator container
@@ -55,6 +59,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Copy supra certificate, ca and key
   ansible.builtin.copy:
@@ -67,6 +73,8 @@
     - { src: "{{ env }}/certs/supra_key.pem", dest: "{{ validator_supra_key_file_path }}" }
     - { src: "{{ env }}/certs/supra_certificate.pem", dest: "{{ validator_supra_certificate_file_path }}" }
     - { src: "{{ env }}/certs/supra_ca.pem", dest: "{{ validator_supra_ca_file_path }}" }
+  notify:
+    - Restart service
 
 - name: Download genesis from URL
   ansible.builtin.get_url:
@@ -83,6 +91,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Copy validator public identity files
   ansible.builtin.copy:
@@ -94,6 +104,8 @@
   loop:
     - { src: "{{ env }}/validator_public_identity.toml", dest: "{{ validator_public_identity_file_path }}" }
     - { src: "{{ env }}/smr_public_key.json", dest: "{{ validator_smr_public_key_path }}" }
+  notify:
+    - Restart service
 
 - name: Copy supra validator systemd environment files
   ansible.builtin.template:
@@ -102,6 +114,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Fetch secrets from HCP Vault
   when: fetch_validator_keys | default(false) | bool
