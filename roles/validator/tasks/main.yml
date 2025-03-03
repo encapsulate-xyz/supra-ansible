@@ -83,6 +83,8 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  notify:
+    - Restart service
 
 - name: Copy network committees files
   ansible.builtin.copy:
