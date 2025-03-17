@@ -9,6 +9,7 @@
     path: "{{ item }}"
     state: absent
   loop: "{{ snapshot_sync_directories[type] }}"
+  when: clean_database | default(false) | bool
 
 - name: Recreate empty data directories
   ansible.builtin.file:
@@ -18,6 +19,7 @@
     group: "{{ service_identifier }}"
     mode: "0755"
   loop: "{{ snapshot_sync_directories[type] }}"
+  when: clean_database | default(false) | bool
 
 - name: Write temporary rclone configuration for Cloudflare R2
   ansible.builtin.copy:
