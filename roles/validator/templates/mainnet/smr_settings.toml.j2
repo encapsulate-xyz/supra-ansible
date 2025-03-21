@@ -134,7 +134,7 @@ connection_refresh_timeout_sec = 1
 # mainnet.
 resume = true
 # The path to the TLS root certificate authority certificate.
-root_ca_cert_path = "{{ validator_ca_certificate_file_path }}"
+root_ca_cert_path = "{{ validator_supra_ca_file_path }}"
 # The port on which to listen for connections from the associated RPC node. Each validator
 # may serve at most one RPC node.
 rpc_access_port = {{ supra.validator.ports.p2p_port }}
