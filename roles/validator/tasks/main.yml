@@ -139,7 +139,7 @@
     - name: Fetch validator_identity.pem
       ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
       vars:
-        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_identity_file_name }}"
+        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ supra.validator.validator_identity_file_name }}"
         secret_destination_path: "{{ validator_identity_file_path }}"
         secret_type: base64
 
