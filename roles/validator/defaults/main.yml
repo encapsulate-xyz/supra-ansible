@@ -38,4 +38,4 @@ validator_public_identity_file_path: "{{ validator_config_dir }}/{{ validator_pu
 validator_smr_public_key_path: "{{ validator_config_dir }}/{{ validator_smr_public_key_name }}"
 
 validator_smr_secret_key_path: "{{ validator_config_dir }}/{{ validator_smr_secret_key_name }}"
-validator_identity_file_path: "{{ validator_config_dir }}/{{ validator_identity_file_name }}"
+validator_identity_file_path: "{{ validator_config_dir }}/{{ supra.validator.validator_identity_file_name }}"
