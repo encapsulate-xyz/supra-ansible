@@ -1,4 +1,8 @@
 ---
+- name: Include install_aws_cli task
+  ansible.builtin.include_tasks: install_aws_cli.yml
+  when: aws_install | default(false) | bool
+
 - name: Stop service
   ansible.builtin.systemd:
     name: "{{ service_identifier }}"
@@ -21,23 +25,24 @@
   loop: "{{ snapshot_sync_directories[type] }}"
   when: clean_database | default(false) | bool
 
-- name: Write temporary rclone configuration for Cloudflare R2
+- name: Write temporary aws configuration
   ansible.builtin.copy:
-    dest: "{{ tmp_dir }}/rclone.conf"
+    dest: "{{ tmp_dir }}/aws.conf"
     mode: "0600"
-    content: "{{ snapshot_sync_rclone_config_content }}"
+    content: "{{ snapshot_sync_aws_config_content }}"
 
 - name: Sync snapshot
   ansible.builtin.command: >
-    rclone sync {{ supra[type].snapshot_url }}/{{ item.src }}
-    {{ item.dest }}/ --progress
+    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com --delete
   environment:
-    RCLONE_CONFIG: "{{ tmp_dir }}/rclone.conf"
+    AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
+    AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ vault.supra.external[env].cloudflare_secret_access_key }}"
   async: 10000
   poll: 20
   loop: "{{ sync_paths[type] }}"
-  register: rclone_result
-  changed_when: rclone_result.stdout is defined and rclone_result.stdout != ""
+  register: aws_sync_result
+  changed_when: aws_sync_result.stdout is defined and aws_sync_result.stdout != ""
   notify:
     - Restart service
   vars:
@@ -56,7 +61,7 @@
     recurse: true
   loop: "{{ snapshot_sync_directories[type] }}"
 
-- name: Clean up temporary rclone configuration
+- name: Clean up temporary aws configuration
   ansible.builtin.file:
-    path: "{{ tmp_dir }}/rclone.conf"
+    path: "{{ tmp_dir }}/aws.conf"
     state: absent

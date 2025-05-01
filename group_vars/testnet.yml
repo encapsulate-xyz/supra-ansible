@@ -6,12 +6,12 @@ supra:
     ports:
       node_public_identity_port: 25000
       p2p_port: 26000
-    snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
+    snapshot_url: s3://testnet-validator-snapshot/snapshots
     genesis_url: https://testnet-snapshot.supra.com/configs/genesis.blob
     validator_identity_file_name: node_identity.pem
   fullnode:
     version: v9.0.12
     ports:
       p2p_port: 27000
-    snapshot_url: cloudflare-r2:testnet-snapshot/snapshots
+    snapshot_url: s3://testnet-snapshot/snapshots
     genesis_url: https://testnet-snapshot.supra.com/configs/genesis.blob
