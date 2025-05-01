@@ -154,6 +154,6 @@
     - Reload service
     - Restart service
 
-- name: Include data migration task
+- name: Include database migration task
   ansible.builtin.include_tasks: database_migration.yml
-  when: data_migration | default(false) | bool
+  when: database_migration | default(false) | bool
