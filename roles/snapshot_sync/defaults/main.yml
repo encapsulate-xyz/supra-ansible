@@ -21,13 +21,11 @@ snapshot_sync_directories:
     - "{{ snapshot_sync_smr_storage_dir }}"
     - "{{ snapshot_sync_ledger_storage_dir }}"
 
-snapshot_sync_rclone_config_content: |
-  [cloudflare-r2]
-  type = s3
-  provider = Cloudflare
-  access_key_id = {{ vault.supra.external[env].cloudflare_access_key_id }}
-  secret_access_key = {{ vault.supra.external[env].cloudflare_secret_access_key }}
+snapshot_sync_aws_config_content: |
+  [default]
   region = auto
-  endpoint = https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com
-  acl = private
-  no_check_bucket = true
+  output = json
+  s3 =
+      max_concurrent_requests = 1000
+      multipart_threshold = 512MB
+      multipart_chunksize = 256MB

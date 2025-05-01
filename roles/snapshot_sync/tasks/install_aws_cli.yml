@@ -1,0 +1,24 @@
+---
+- name: Download AWS CLI v2 installer
+  get_url:
+    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+    dest: /tmp/awscliv2.zip
+
+- name: Unzip AWS CLI installer
+  unarchive:
+    src: /tmp/awscliv2.zip
+    dest: /tmp
+    remote_src: yes
+
+- name: Run AWS CLI install script
+  command: ./aws/install
+  args:
+    chdir: /tmp
+
+- name: Clean up AWS CLI install files
+  file:
+    path: "/tmp/{{ item }}"
+    state: absent
+  loop:
+    - aws
+    - awscliv2.zip

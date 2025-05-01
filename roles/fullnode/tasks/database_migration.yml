@@ -1,4 +1,9 @@
 ---
+- name: Stop service
+  ansible.builtin.systemd:
+    name: "{{ service_identifier }}"
+    state: stopped
+
 - name: Migrate database
   ansible.builtin.command: "{{ fullnode_bin_dir }}/{{ service_identifier }} migrate-db --max-buffer-record-count 100000 {{ fullnode_config_file_path }}"
   register: database_migrate_result
