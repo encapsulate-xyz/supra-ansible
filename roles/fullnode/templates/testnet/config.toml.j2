@@ -1,3 +1,6 @@
+# Version: v9.0.7
+####################################### PROTOCOL PARAMETERS #######################################
+
 # The below parameters are fixed for the protocol and must be agreed upon by all node operators
 # at genesis. They may subsequently be updated via governance decisions.
 
@@ -36,14 +39,16 @@ certified_block_cache_bucket_size = 50
 sync_retry_interval_in_secs = 1
 
 [synchronization.ws]
-# The path to the TLS certificate for the connection with the attached validator.
-consensus_client_cert_path = "{{ fullnode_supra_certificate_file_path }}"
-# The path to the private key to be used when negotiating TLS connections.
-consensus_client_private_key_path = "{{ fullnode_supra_key_file_path }}"
-# The path to the TLS root certificate authority certificate.
-consensus_root_ca_cert_path = "{{ fullnode_supra_ca_file_path }}"
 # The websocket address of the attached validator.
 consensus_rpc = "ws://{{ supra.validator.ip_address }}:{{ supra.validator.ports.p2p_port }}"
+
+[synchronization.ws.certificates]
+# The path to the TLS certificate for the connection with the attached validator.
+cert_path = "{{ fullnode_supra_certificate_file_path }}"
+# The path to the private key to be used when negotiating TLS connections.
+private_key_path = "{{ fullnode_supra_key_file_path }}"
+# The path to the TLS root certificate authority certificate.
+root_ca_cert_path = "{{ fullnode_supra_ca_file_path }}"
 
 # Parameters for the RPC Archive database. This database stores the indexes used to serve RPC API calls.
 [database_setup.dbs.archive.rocks_db]
