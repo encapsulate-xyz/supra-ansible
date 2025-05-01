@@ -23,7 +23,7 @@
     group: "{{ service_identifier }}"
     mode: "0755"
   loop: "{{ snapshot_sync_directories[type] }}"
-  # when: clean_database | default(false) | bool
+  when: clean_database | default(false) | bool
 
 - name: Write temporary aws configuration
   ansible.builtin.copy:
