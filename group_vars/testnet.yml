@@ -1,7 +1,7 @@
 ---
 supra:
   validator:
-    version: v8.0.2
+    version: v9.0.12
     ip_address: 176.9.8.81
     ports:
       node_public_identity_port: 25000
