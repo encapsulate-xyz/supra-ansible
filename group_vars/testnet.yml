@@ -13,5 +13,5 @@ supra:
     version: v9.0.12
     ports:
       p2p_port: 27000
-    snapshot_url: s3://testnet-snapshot/snapshots
+    snapshot_url: s3://testnet-archive-snapshot/snapshots
     genesis_url: https://testnet-snapshot.supra.com/configs/genesis.blob
