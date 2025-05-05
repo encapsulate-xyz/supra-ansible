@@ -14,7 +14,6 @@
     - apt-transport-https
     - software-properties-common
     - unzip
-    - rclone
 
 - name: Install Docker
   ansible.builtin.import_tasks: install_docker.yml

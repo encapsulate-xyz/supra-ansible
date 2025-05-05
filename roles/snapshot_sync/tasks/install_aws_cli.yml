@@ -1,24 +1,21 @@
 ---
 - name: Download AWS CLI v2 installer
-  get_url:
-    url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
-    dest: /tmp/awscliv2.zip
-
-- name: Unzip AWS CLI installer
-  unarchive:
-    src: /tmp/awscliv2.zip
-    dest: /tmp
-    remote_src: yes
+  ansible.builtin.unarchive:
+    src: "{{ aws.source_url }}"
+    dest: "{{ tmp_dir }}"
+    remote_src: true
+    owner: root
+    group: root
+    mode: "0755"
 
 - name: Run AWS CLI install script
-  command: ./aws/install
+  ansible.builtin.command: ./aws/install --update
   args:
     chdir: /tmp
+  register: aws_cli_install_result
+  failed_when: aws_cli_install_result.rc != 0
 
-- name: Clean up AWS CLI install files
-  file:
-    path: "/tmp/{{ item }}"
+- name: Clean up the AWS CLI installer folder in /tmp
+  ansible.builtin.file:
+    path: "{{ tmp_dir }}/aws"
     state: absent
-  loop:
-    - aws
-    - awscliv2.zip
