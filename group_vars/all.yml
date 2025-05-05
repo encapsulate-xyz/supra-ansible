@@ -19,7 +19,7 @@ supra:
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/rpc-node
   validator:
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
-  snapshot_url: https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com
+  snapshot_endpoint_url: https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com
 
 promtail:
   service_identifier_suffix: promtail

@@ -35,7 +35,7 @@
 
 - name: Sync snapshot
   ansible.builtin.command: >
-    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url {{ supra.snapshot_url }} --delete
+    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url {{ supra.snapshot_endpoint_url }} --delete
   environment:
     AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
     AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"
