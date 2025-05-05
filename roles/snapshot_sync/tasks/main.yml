@@ -1,7 +1,9 @@
 ---
+- name: Include set_system_settings task
+  ansible.builtin.include_tasks: set_system_settings.yml
+
 - name: Include install_aws_cli task
   ansible.builtin.include_tasks: install_aws_cli.yml
-  when: aws_install | default(false) | bool
 
 - name: Stop service
   ansible.builtin.systemd:
@@ -33,7 +35,7 @@
 
 - name: Sync snapshot
   ansible.builtin.command: >
-    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com --delete
+    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url {{ supra.snapshot_url }} --delete
   environment:
     AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
     AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"

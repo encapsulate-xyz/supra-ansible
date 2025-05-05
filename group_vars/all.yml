@@ -19,6 +19,7 @@ supra:
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/rpc-node
   validator:
     source_url: asia-docker.pkg.dev/supra-devnet-misc/supra-{{ env }}/validator-node
+  snapshot_url: https://4ecc77f16aaa2e53317a19267e3034a4.r2.cloudflarestorage.com
 
 promtail:
   service_identifier_suffix: promtail
@@ -36,3 +37,6 @@ telegraf:
   service_identifier_suffix: telegraf
   source_url: https://dl.influxdata.com/telegraf/releases
   file_extension: tar.gz
+
+aws:
+  source_url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip

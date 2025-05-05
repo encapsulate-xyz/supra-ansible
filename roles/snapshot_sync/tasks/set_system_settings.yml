@@ -1,0 +1,32 @@
+---
+- name: Configure user limits
+  ansible.builtin.copy:
+    dest: /etc/security/limits.d/100-{{ service_identifier }}-limits.conf
+    content: |
+      * soft nofile 1048576
+      * hard nofile 1048576
+      * soft nproc  1048576
+      * hard nproc  1048576
+    owner: root
+    group: root
+    mode: "0644"
+  register: user_limits
+
+- name: Configure sysctl settings
+  ansible.builtin.copy:
+    dest: /etc/sysctl.d/100-{{ service_identifier }}-tuning.conf
+    content: |
+      fs.file-max = 2097152
+      fs.inotify.max_user_instances = 1024
+      fs.inotify.max_user_watches = 1048576
+      net.ipv4.tcp_max_syn_backlog = 65535
+      net.ipv4.ip_local_port_range = 1024 65000
+      net.ipv4.tcp_tw_reuse = 1
+    owner: root
+    group: root
+    mode: "0644"
+  register: sysctl_settings
+
+- name: Apply sysctl settings
+  ansible.builtin.command: sysctl --system
+  when: user_limits.changed or sysctl_settings.changed
