@@ -15,11 +15,9 @@ snapshot_sync_directories:
   fullnode:
     - "{{ snapshot_sync_archive_dir }}"
     - "{{ snapshot_sync_store_dir }}"
-    - "{{ snapshot_sync_ledger_dir }}"
     - "{{ snapshot_sync_snapshot_dir }}"
   validator:
     - "{{ snapshot_sync_smr_storage_dir }}"
-    - "{{ snapshot_sync_ledger_storage_dir }}"
 
 snapshot_sync_aws_config_content: |
   [default]
