@@ -10,6 +10,7 @@ validator_env_dir: "{{ validator_home_dir }}/environment"
 
 validator_smr_storage_dir: "{{ validator_data_dir }}/smr_storage"
 validator_ledger_storage_dir: "{{ validator_data_dir }}/ledger_storage"
+validator_snapshot_dir: "{{ validator_data_dir }}/snapshot"
 
 validator_directories:
   - "{{ validator_home_dir }}"
@@ -21,6 +22,7 @@ validator_directories:
   - "{{ validator_env_dir }}"
   - "{{ validator_smr_storage_dir }}"
   - "{{ validator_ledger_storage_dir }}"
+  - "{{ validator_snapshot_dir }}"
 
 validator_environment_secrets_file_path: "{{ validator_env_dir }}/{{ validator_environment_secrets_file_name }}"
 validator_environment_general_file_path: "{{ validator_env_dir }}/{{ validator_environment_general_file_name }}"
