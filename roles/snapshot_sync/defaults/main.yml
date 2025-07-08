@@ -18,12 +18,3 @@ snapshot_sync_directories:
     - "{{ snapshot_sync_snapshot_dir }}"
   validator:
     - "{{ snapshot_sync_smr_storage_dir }}"
-
-snapshot_sync_aws_config_content: |
-  [default]
-  region = auto
-  output = json
-  s3 =
-      max_concurrent_requests = 1000
-      multipart_threshold = 512MB
-      multipart_chunksize = 256MB
