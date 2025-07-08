@@ -28,9 +28,14 @@ This playbook relies on HashiCorp Vault to securely retrieve sensitive files, su
 **Note on Secrets Management**
 
 The playbook dynamically retrieves private validator keys and node keys from HashiCorp Vault. The keys are expected to follow a structured path format:
+
 `<environment>/<project>/<organization>/<type>/<file_name>`
+
 For example:
 `testnet/supra/encapsulate/validator/smr_secret_key.pem`
+
+The secret env file example:
+[testnet/supra/encapsulate/validator/supra.secrets.env](roles/validator/templates/testnet/secrets.env.example)
 
 This structure ensures easy organization and secure retrieval of secrets.
 
