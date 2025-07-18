@@ -6,6 +6,6 @@ snapshot_sync_aws_config_content: |
   region = auto
   output = json
   s3 =
-      max_concurrent_requests = 500
+      max_concurrent_requests = 50
       multipart_threshold = 512MB
       multipart_chunksize = 256MB
