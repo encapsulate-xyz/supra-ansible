@@ -65,7 +65,7 @@ root_ca_cert_path = "{{ fullnode_supra_ca_file_path }}"
 path = "{{ fullnode_archive_dir }}"
 # Whether the database should be pruned. If `true`, data that is more than `epochs_to_retain`
 # old will be deleted.
-enable_pruning = true
+enable_pruning = false
 # Whether snapshots should be taken of the database.
 enable_snapshots = false
 
@@ -75,7 +75,7 @@ enable_snapshots = false
 path = "{{ fullnode_ledger_dir }}"
 # Whether the database should be pruned. If `true`, data that is more than `epochs_to_retain`
 # old will be deleted.
-enable_pruning = true
+enable_pruning = false
 # Whether snapshots should be taken of the database.
 enable_snapshots = false
 
@@ -85,7 +85,7 @@ enable_snapshots = false
 path = "{{ fullnode_store_dir }}"
 # Whether the database should be pruned. If `true`, data that is more than `epochs_to_retain`
 # old will be deleted.
-enable_pruning = true
+enable_pruning = false
 # Whether snapshots should be taken of the database.
 enable_snapshots = false
 
