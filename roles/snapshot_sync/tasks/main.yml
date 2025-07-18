@@ -35,13 +35,17 @@
 
 - name: Sync snapshot
   ansible.builtin.command: >
-    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" --endpoint-url {{ supra.snapshot_endpoint_url }} --delete
+    aws s3 sync "{{ supra[type].snapshot_url }}/{{ item.src }}/" "{{ item.dest }}" 
+    --endpoint-url {{ supra.snapshot_endpoint_url }} 
+    --delete --only-show-errors --cli-connect-timeout 300 --cli-read-timeout 300
   environment:
     AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
     AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"
     AWS_SECRET_ACCESS_KEY: "{{ vault.supra.external[env].cloudflare_secret_access_key }}"
-  async: 10000
+  async: 100000
   poll: 20
+  retries: 30
+  delay: 10
   loop: "{{ sync_paths[type] }}"
   register: aws_sync_result
   changed_when: aws_sync_result.stdout is defined and aws_sync_result.stdout != ""
