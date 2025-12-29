@@ -32,7 +32,8 @@ The playbook dynamically retrieves private validator keys and node keys from Has
 `<environment>/<project>/<organization>/<type>/<file_name>`
 
 For example:
-`testnet/supra/encapsulate/validator/smr_secret_key.pem`
+- `testnet/supra/encapsulate/validator/smr_secret_key.pem`
+- [`testnet/supra/encapsulate/validator/supra.secrets.env`](roles/validator/templates/secrets.env.example)
 
 The secret env file example:
 [testnet/supra/encapsulate/validator/supra.secrets.env](roles/validator/templates/testnet/secrets.env.example)
