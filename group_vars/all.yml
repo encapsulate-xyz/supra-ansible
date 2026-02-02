@@ -1,7 +1,7 @@
 ---
 org: encapsulate
 domain_regex: ^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$
-monitor_server_dns: monitor.encapsulate.xyz
+influxdb_dns: https://influxdb.encapsulate.xyz
 ansible_port: 8192
 
 architecture_map:

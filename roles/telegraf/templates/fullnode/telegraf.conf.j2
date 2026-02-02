@@ -200,5 +200,5 @@
   bucket = "supra-metrics" 
 
 [[outputs.influxdb]]
-  urls = ["http://{{ monitor_server_dns }}:9122"]
+  urls = ["{{ influxdb_dns }}]
   namepass = ["prometheus"]
