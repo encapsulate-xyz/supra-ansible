@@ -120,7 +120,7 @@
     - Restart service
 
 - name: Fetch secrets from HCP Vault
-  when: fetch_validator_keys | default(false) | bool
+  when: fetch_vault_secrets | default(false) | bool
   block:
     - name: Fetch secrets environment file from HCP Vault and save to file
       ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml

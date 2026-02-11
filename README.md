@@ -136,10 +136,10 @@ vault:
 3. Then run the playbook:
 
   ```bash
-  ansible-playbook main.yml -l validator.supra.testnet.encapsulate.xyz -e "fetch_validator_keys=true"
+  ansible-playbook main.yml -l validator.supra.testnet.encapsulate.xyz -e "fetch_vault_secrets=true"
   ```
 
-**Note**: The default value for `fetch_validator_keys` is false, which disables fetching keys from Hashicorp Vault.
+**Note**: The default value for `fetch_vault_secrets` is false, which disables fetching keys from Hashicorp Vault.
 
 After you run the playbook, it will ask for confirmation, displaying all the variables and the IP address or DNS of the server you are going to deploy.
 
