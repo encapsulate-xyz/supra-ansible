@@ -157,3 +157,7 @@
 - name: Include database migration task
   ansible.builtin.include_tasks: database_migration.yml
   when: database_migration | default(false) | bool
+
+- name: Include profile migration task
+  ansible.builtin.include_tasks: profile_migration.yml
+  when: profile_migration | default(false) | bool
