@@ -120,7 +120,7 @@
     - Restart service
 
 - name: Fetch secrets from HCP Vault
-  when: fetch_validator_keys | default(false) | bool
+  when: fetch_vault_secrets | default(false) | bool
   block:
     - name: Fetch secrets environment file from HCP Vault and save to file
       ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
@@ -157,3 +157,7 @@
 - name: Include database migration task
   ansible.builtin.include_tasks: database_migration.yml
   when: database_migration | default(false) | bool
+
+- name: Include profile migration task
+  ansible.builtin.include_tasks: profile_migration.yml
+  when: profile_migration | default(false) | bool
