@@ -83,6 +83,7 @@
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
     mode: "0644"
+  when: download_genesis | default(false) | bool
   notify:
     - Restart service
 
