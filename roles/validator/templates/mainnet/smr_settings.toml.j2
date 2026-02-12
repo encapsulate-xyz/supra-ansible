@@ -5,7 +5,7 @@
 # to $SUPRA_HOME.
 
 # Core protocol parameters.
-[instance]
+[instance] 
 # A unique identifier for this instance of the Supra protocol. Prevents replay attacks across chains.
 chain_id = 8
 # The length of an epoch in seconds.
@@ -75,52 +75,6 @@ sync_retry_delay_ms = 1000
 # measured from the start of the round. Denominated in ms. Must be the same for all nodes.
 timeout_delay_ms = 3500
 
-# Parameters related to the MoveVM. Primarily related to governance features.
-[move_vm]
-# Initially `false` until the network matures.
-allow_new_validators = false
-# The maximum stake that may be allocated to a Supra Validator. We are not currently doing
-# stake-weighted voting, so this value does not impact our decentralization quotient. This
-# may change in the future. Initially set to the total supply.
-#
-# Measured in Quants (1 Quant = 10^-8 SUPRA). Equal to 100_000_000_000 SUPRA.
-max_stake = "10000000000000000000"
-# The minimum stake required to run a Supra Validator. There is no minimum at genesis
-# because The Foundation's stake is added after the stake pools are created. We will increase
-# it to its intended value of 55M SUPRA via governance. New nodes will not be able to join the
-# validator set before the update is made. Measured in Quants (1 Quant = 10^-8 SUPRA).
-min_stake = 0
-# The number of tokens initially allocated to node operators. Tokens will be earned through block
-# rewards.
-operator_account_balance = 0
-# The amount of Quants to transfer from each validator owner account to the corresponding stake pool
-# after it has been created, during the genesis transaction. Adding the stake after creating the
-# pool allows us to ensure that The Foundation's stake is not subject to the PBO locking schedule,
-# which is only intended to apply to winners of the Project Blast Off campaign.
-#
-# Measured in Quants (1 Quant = 10^-8 SUPRA). Equal to 55_000_000 SUPRA.
-pbo_owner_stake = 5500000000000000
-# The number of seconds after `genesis_timestamp_microseconds` at which all accounts with
-# allocations at genesis will be able to unlock their initial amounts. These amounts are stored
-# in vesting contracts.
-#
-# Corresponds to Wednesday, Nov 20, 2024 12:00:00.000 AM (UTC).
-remaining_balance_lockup_cliff_period_in_seconds = 0
-# The amount of SUPRA required to qualify as a proposer (this parameter is currently unused).
-required_proposer_stake = 0
-# The annual percent yield for validators, proportional to their stake. Specified as a percentage
-# with 2 decimals of precision in u64 format due to limitations in the MoveVM. The below value
-# represents 12.85%.
-rewards_apy_percentage = 1285
-# The percentage of staking rewards earned by Supra Foundation controlled nodes that will be paid
-# to the corresponding node operators. Specified as a percentage with 2 decimals of precision in
-# u64 format due to limitations in the MoveVM. The below value represents 37.74%.
-validator_commission_rate_percentage = 3774
-# The percentage of new stake relative to the current total stake that can join the validator
-# set or be added to existing validators within a single epoch.
-voting_power_increase_limit = 33
-
-
 ######################################### NODE PARAMETERS #########################################
 
 # The below parameters are node-specific and may be configured as required by the operator. Paths
@@ -138,15 +92,17 @@ connection_refresh_timeout_sec = 1
 # all components will start in their default state. Should always be `true` for testnet and
 # mainnet.
 resume = true
-# The path to the TLS root certificate authority certificate.
-root_ca_cert_path = "{{ validator_supra_ca_file_path }}"
 # The port on which to listen for connections from the associated RPC node. Each validator
 # may serve at most one RPC node.
 rpc_access_port = {{ supra.validator.ports.p2p_port }}
+
+[node.ws_server.certificates]
+# The path to the TLS root certificate authority certificate.
+root_ca_cert_path = "{{ validator_supra_ca_file_path }}"
 # The path to the TLS certificate for this node.
-server_cert_path = "{{ validator_supra_certificate_file_path }}"
+cert_path = "{{ validator_supra_certificate_file_path }}"
 # The path to the private key to be used when negotiating TLS connections.
-server_private_key_path = "{{ validator_supra_key_file_path }}"
+private_key_path = "{{ validator_supra_key_file_path }}"
 
 # Parameters for the blockchain database.
 [node.database_setup.dbs.chain_store.rocks_db]
@@ -155,6 +111,8 @@ path = "{{ validator_smr_storage_dir }}"
 # Whether the database should be pruned. If `true`, data that is more than `epochs_to_retain`
 # old will be deleted.
 enable_pruning = true
+# Whether snapshots should be taken of the database.
+enable_snapshots = false
 
 # Parameters for the DKG database.
 [node.database_setup.dbs.ledger.rocks_db]
