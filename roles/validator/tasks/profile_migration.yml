@@ -5,7 +5,9 @@
     state: stopped
 
 - name: Migrate profile
-  ansible.builtin.command: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate"
+  ansible.builtin.command:
+    cmd: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate"
+    chdir: "{{ validator_home_dir }}"
   register: profile_migrate_result
   failed_when: profile_migrate_result.rc != 0
   notify:
