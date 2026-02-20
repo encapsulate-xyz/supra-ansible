@@ -1,7 +1,7 @@
 ---
 org: encapsulate
 domain_regex: ^([a-zA-Z0-9-]+\.)+[a-zA-Z]{2,}$
-influxdb_dns: https://influxdb.encapsulate.xyz
+influxdb_dns: http://h1-finland-hub-monitor.crane-goldeye.ts.net:9122
 ansible_port: 8192
 
 architecture_map:
