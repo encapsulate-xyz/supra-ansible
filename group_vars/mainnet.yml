@@ -9,9 +9,3 @@ supra:
     snapshot_url: s3://mainnet-validator-snapshot/snapshots
     genesis_url: https://mainnet-data.supra.com/configs/genesis.blob
     validator_identity_file_name: node_identity.pem
-  fullnode:
-    version: v9.1.7
-    ports:
-      p2p_port: 30000
-    snapshot_url: s3://mainnet-archive-snapshot/snapshots
-    genesis_url: https://mainnet-data.supra.com/configs/genesis.blob
