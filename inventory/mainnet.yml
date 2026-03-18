@@ -5,5 +5,5 @@ all:
   children:
     supra:
       hosts:
-        validator.supra.mainnet.encapsulate.xyz:
+        ts.validator.supra.mainnet.encapsulate.xyz:
           type: validator
