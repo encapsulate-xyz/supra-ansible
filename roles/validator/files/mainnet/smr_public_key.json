@@ -4,11 +4,11 @@
     "supra_mainnet_176.9.8.81": {
       "ed25519_public_key": "0cdad0ef9642208c51a7f92e2330924b435dfbc6dbf0e5918c9b9d69025d1903",
       "account_address": "733bc5c79ce711c46e48dc87ac1a1bdf4f488a11d897e56358a9556dae9f3a90",
-      "network": null,
+      "chain_id": 8,
+      "network": "Mainnet",
       "rpc_url": "https://rpc-mainnet.supra.com/",
-      "faucet_url": "https://rpc-mainnet.supra.com/",
-      "chain_id": 8
+      "faucet_url": "https://rpc-mainnet.supra.com/"
     }
   },
-  "version": "bef293f79d9b80a14e4d62295dc1804968f836ff"
+  "version": "cde8c9d5e24a97e8c59c1656551edb25e0d59000"
 }
