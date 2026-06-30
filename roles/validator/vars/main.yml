@@ -1,6 +1,7 @@
 ---
 # Config file names
 validator_smr_settings_file_name: smr_settings.toml
+validator_genesis_parameters_file_name: genesis_parameters.toml
 
 # Supra files names
 validator_supra_key_file_name: supra_key.pem
