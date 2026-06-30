@@ -4,14 +4,14 @@
     name: "{{ service_identifier }}"
     state: stopped
 
-- name: Read NODE_IDENTITY_PASSWORD from secrets env file
+- name: Read CLI_PROFILE_PASSWORD from secrets env file
   ansible.builtin.shell: |
     set -a
     . "{{ validator_environment_secrets_file_path }}"
-    printf '%s' "$NODE_IDENTITY_PASSWORD"
+    printf '%s' "$CLI_PROFILE_PASSWORD"
   args:
     executable: /bin/bash
-  register: node_identity_password
+  register: cli_profile_password
   changed_when: false
   no_log: true
 
@@ -20,7 +20,7 @@
     command: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate --supra-home {{ validator_config_dir }}"
     chdir: "{{ validator_home_dir }}"
     responses:
-      (?i)password: "{{ node_identity_password.stdout | trim }}"
+      (?i)password: "{{ cli_profile_password.stdout | trim }}"
   register: profile_migrate_result
   failed_when: profile_migrate_result.rc != 0
   no_log: true
