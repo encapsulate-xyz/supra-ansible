@@ -1,0 +1,39 @@
+---
+- name: Create Supra Validator Docker container and copy binary
+  vars:
+    container_name: supra_validator
+  block:
+    - name: Create temporary Supra validator container for binary extraction
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        image: "{{ supra.validator.source_url }}:{{ supra.validator.version }}"
+        state: present
+        recreate: true
+
+    - name: Copy Supra validator binary
+      ansible.builtin.shell: >
+        docker cp {{ container_name }}:/supra/supra {{ validator_bin_dir }}/{{ service_identifier }}
+      args:
+        executable: /bin/bash
+      register: copy_result
+      changed_when: copy_result.rc == 0
+      failed_when:
+        - copy_result.rc != 0
+        - "'No such container' in copy_result.stderr"
+      notify:
+        - Restart service
+
+    - name: Ensure Supra validator binary has the correct permissions
+      ansible.builtin.file:
+        path: "{{ validator_bin_dir }}/{{ service_identifier }}"
+        owner: root
+        group: root
+        mode: "0755"
+      notify:
+        - Restart service
+
+  always:
+    - name: Remove Supra validator container
+      community.docker.docker_container:
+        name: "{{ container_name }}"
+        state: absent
