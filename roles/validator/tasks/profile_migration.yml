@@ -6,8 +6,12 @@
 
 - name: Read NODE_OPERATOR_KEY_PASSWORD from secrets env file
   ansible.builtin.shell: |
-    grep -E '^NODE_OPERATOR_KEY_PASSWORD=' "{{ validator_environment_secrets_file_path }}" | cut -d= -f2- | sed -e 's/^"//' -e 's/"$//' -e "s/^'//" -e "s/'$//"
-  register: node_operator_key_password_raw
+    set -a
+    . "{{ validator_environment_secrets_file_path }}"
+    printf '%s' "$NODE_OPERATOR_KEY_PASSWORD"
+  args:
+    executable: /bin/bash
+  register: node_operator_key_password
   changed_when: false
   no_log: true
 
@@ -16,7 +20,7 @@
     command: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate"
     chdir: "{{ validator_home_dir }}"
     responses:
-      (?i)password: "{{ node_operator_key_password_raw.stdout | trim }}"
+      (?i)password: "{{ node_operator_key_password.stdout | trim }}"
   register: profile_migrate_result
   failed_when: profile_migrate_result.rc != 0
   no_log: true
