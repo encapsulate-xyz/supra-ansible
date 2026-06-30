@@ -5,10 +5,13 @@
     state: stopped
 
 - name: Migrate profile
-  ansible.builtin.command:
-    cmd: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate"
+  ansible.builtin.expect:
+    command: "{{ validator_bin_dir }}/{{ service_identifier }} profile migrate"
     chdir: "{{ validator_home_dir }}"
+    responses:
+      (?i)password: "{{ lookup('env', 'NODE_OPERATOR_KEY_PASSWORD') }}"
   register: profile_migrate_result
   failed_when: profile_migrate_result.rc != 0
+  no_log: true
   notify:
     - Restart service
