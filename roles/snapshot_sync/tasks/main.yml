@@ -27,11 +27,51 @@
   loop: "{{ snapshot_sync_directories[type] }}"
   when: clean_database | default(false) | bool
 
+- name: Remove existing CURRENT file before sync
+  ansible.builtin.file:
+    path: "{{ item.dest }}/CURRENT"
+    state: absent
+  loop: "{{ sync_paths[type] }}"
+  vars:
+    sync_paths:
+      fullnode:
+        - { src: store, dest: "{{ snapshot_sync_store_dir }}" }
+        - { src: archive, dest: "{{ snapshot_sync_archive_dir }}" }
+      validator:
+        - { src: store, dest: "{{ snapshot_sync_smr_storage_dir }}" }
+
 - name: Write temporary aws configuration
   ansible.builtin.copy:
     dest: "{{ tmp_dir }}/aws.conf"
     mode: "0600"
     content: "{{ snapshot_sync_aws_config_content }}"
+
+- name: Check for UPLOAD_IN_PROGRESS lock file on remote snapshot bucket
+  ansible.builtin.command: >
+    aws s3 ls "{{ supra[type].snapshot_url }}/UPLOAD_IN_PROGRESS"
+    --endpoint-url {{ supra.snapshot_endpoint_url }}
+  environment:
+    AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
+    AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ vault.supra.external[env].cloudflare_secret_access_key }}"
+  register: snapshot_lock_check
+  failed_when: false
+  changed_when: false
+
+- name: Wait for snapshot upload to complete if UPLOAD_IN_PROGRESS lock file exists
+  ansible.builtin.command: >
+    aws s3 ls "{{ supra[type].snapshot_url }}/UPLOAD_IN_PROGRESS"
+    --endpoint-url {{ supra.snapshot_endpoint_url }}
+  environment:
+    AWS_CONFIG_FILE: "{{ tmp_dir }}/aws.conf"
+    AWS_ACCESS_KEY_ID: "{{ vault.supra.external[env].cloudflare_access_key_id }}"
+    AWS_SECRET_ACCESS_KEY: "{{ vault.supra.external[env].cloudflare_secret_access_key }}"
+  register: snapshot_lock_poll
+  until: snapshot_lock_poll.rc != 0 or snapshot_lock_poll.stdout == ""
+  retries: 120
+  delay: 10
+  when: snapshot_lock_check.rc == 0 and snapshot_lock_check.stdout != ""
+  changed_when: false
 
 - name: Sync snapshot
   ansible.builtin.command: >

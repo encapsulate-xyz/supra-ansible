@@ -117,6 +117,13 @@
         secret_destination_path: "{{ validator_identity_file_path }}"
         secret_type: base64
 
+    - name: Fetch cli_data.db
+      ansible.builtin.include_tasks: tasks/get_and_save_vault_secret.yml
+      vars:
+        vault_secret_source_path: "{{ project }}/{{ org }}/{{ type }}/{{ validator_cli_data_db_file_name }}"
+        secret_destination_path: "{{ validator_cli_data_db_file_path }}"
+        secret_type: base64
+
 - name: Include database migration task
   ansible.builtin.include_tasks: database_migration.yml
   when: database_migration | default(false) | bool

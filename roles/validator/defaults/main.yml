@@ -43,3 +43,5 @@ validator_smr_secret_key_path: "{{ validator_config_dir }}/{{ validator_smr_secr
 validator_identity_file_path: "{{ validator_config_dir }}/{{ supra.validator.validator_identity_file_name }}"
 
 validator_genesis_parameters_file_path: "{{ validator_config_dir }}/{{ validator_genesis_parameters_file_name }}"
+
+validator_cli_data_db_file_path: "{{ validator_config_dir }}/{{ validator_cli_data_db_file_name }}"
