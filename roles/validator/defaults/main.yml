@@ -24,6 +24,9 @@ validator_directories:
   - "{{ validator_ledger_storage_dir }}"
   - "{{ validator_snapshot_dir }}"
 
+validator_log_file_path: "{{ validator_log_dir }}/{{ service_identifier }}.log"
+validator_supra_log_source_path: "{{ validator_config_dir }}/supra_node_logs/{{ validator_supra_log_file_name }}"
+
 validator_environment_secrets_file_path: "{{ validator_env_dir }}/{{ validator_environment_secrets_file_name }}"
 validator_environment_general_file_path: "{{ validator_env_dir }}/{{ validator_environment_general_file_name }}"
 

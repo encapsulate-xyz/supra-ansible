@@ -16,6 +16,14 @@
 - name: Include copy binary task
   ansible.builtin.include_tasks: copy_binary.yml
 
+- name: Symlink supra log file
+  ansible.builtin.file:
+    src: "{{ validator_supra_log_source_path }}"
+    dest: "{{ validator_log_file_path }}"
+    state: link
+    owner: "{{ service_identifier }}"
+    group: "{{ service_identifier }}"
+
 - name: Copy smr_settings.toml file
   ansible.builtin.template:
     src: "{{ env }}/smr_settings.toml.j2"

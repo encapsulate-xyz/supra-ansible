@@ -8,6 +8,7 @@ validator_supra_key_file_name: supra_key.pem
 validator_supra_certificate_file_name: supra_certificate.pem
 validator_supra_ca_file_name: supra_ca.pem
 validator_cli_data_db_file_name: cli_data.db
+validator_supra_log_file_name: supra.log
 
 # Network files names
 validator_supra_committees_file_name: supra_committees.json
