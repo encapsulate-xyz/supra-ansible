@@ -21,6 +21,7 @@
     src: "{{ validator_supra_log_source_path }}"
     dest: "{{ validator_log_file_path }}"
     state: link
+    force: true
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
 
