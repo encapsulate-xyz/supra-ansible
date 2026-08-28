@@ -18,8 +18,8 @@
 
 - name: Symlink supra log file
   ansible.builtin.file:
-    src: "{{ validator_config_dir }}/supra_node_logs/supra.log"
-    dest: "{{ validator_log_dir }}/supra.log"
+    src: "{{ validator_supra_log_source_path }}"
+    dest: "{{ validator_log_file_path }}"
     state: link
     owner: "{{ service_identifier }}"
     group: "{{ service_identifier }}"
