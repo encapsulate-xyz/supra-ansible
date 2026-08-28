@@ -1,3 +1,0 @@
----
-telegraf_config_file_name: telegraf-config.conf
-telegraf_default_binary_name: telegraf

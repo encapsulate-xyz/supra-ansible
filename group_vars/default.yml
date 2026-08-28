@@ -1,6 +1,0 @@
----
-promtail:
-  version: 3.3.2
-
-telegraf:
-  version: 1.33.1
