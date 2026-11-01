@@ -1,0 +1,11 @@
+# This file contains ignores rule violations for ansible-lint
+roles/snapshot_sync/tasks/install_aws_cli.yml no-changed-when
+roles/snapshot_sync/tasks/install_aws_cli.yml var-naming[no-role-prefix]
+roles/snapshot_sync/tasks/main.yml var-naming[no-role-prefix]
+roles/snapshot_sync/tasks/main.yml yaml[trailing-spaces]
+roles/snapshot_sync/tasks/set_system_settings.yml no-changed-when
+roles/snapshot_sync/tasks/set_system_settings.yml var-naming[no-role-prefix]
+roles/validator/tasks/copy_binary.yml var-naming[no-role-prefix]
+roles/validator/tasks/database_migration.yml no-changed-when
+roles/validator/tasks/database_migration.yml var-naming[no-role-prefix]
+roles/validator/tasks/profile_migration.yml var-naming[no-role-prefix]
