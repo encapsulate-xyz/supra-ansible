@@ -29,3 +29,15 @@
         - name: Include validator role
           ansible.builtin.include_role:
             name: validator
+            public: true
+
+  post_tasks:
+    - name: Verify validator
+      when: type in allowed_node_types
+      block:
+        - name: Include verify service task
+          ansible.builtin.include_tasks: tasks/verify_service.yml
+          vars:
+            log_file_path: "{{ validator_log_file_path }}"
+            # supra's default prometheus_exporter_port, smr_settings.toml doesn't set it
+            health_url: http://localhost:9000/metrics
