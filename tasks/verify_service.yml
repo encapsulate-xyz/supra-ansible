@@ -48,10 +48,13 @@
       changed_when: false
       when: version_command is defined
 
+    # not default(), which would read vars[project] even when expected_version is set
     - name: Check the installed version
+      vars:
+        wanted_version: "{{ expected_version if expected_version is defined else vars[project][type].version }}"
       ansible.builtin.assert:
-        that: (expected_version | default(vars[project][type].version)) | string in installed_version.stdout ~ installed_version.stderr
-        fail_msg: "Expected {{ expected_version | default(vars[project][type].version) }}, got: {{ installed_version.stdout ~ installed_version.stderr }}"
+        that: wanted_version | string in installed_version.stdout ~ installed_version.stderr
+        fail_msg: "Expected {{ wanted_version }}, got: {{ installed_version.stdout ~ installed_version.stderr }}"
         quiet: true
       when: version_command is defined
 
